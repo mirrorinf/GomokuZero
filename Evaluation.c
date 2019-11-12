@@ -160,6 +160,7 @@ int detectLiveThreeOfTheWhitePlayerOnDirections(GomokuState *self, int atLine, i
 float quickEvaluationForTheCurrentPlayer(GomokuState *self) {
     int result, tempNumber[4], tempOffset[4];
     int i, j, r, s;
+    float ev;
     result = 0;
 
     for (i = 0; i < 225; i++) {
@@ -185,5 +186,12 @@ float quickEvaluationForTheCurrentPlayer(GomokuState *self) {
         }
     }
 
-    return -1.0/500 * result * self->nextMoveParty;
+    ev = -1.0/80 * result * self->nextMoveParty;
+    if (ev > 1.2) {
+        return 1.2;
+    }
+    if (ev < -1.2) {
+        return -1.2;
+    }
+    return ev;
 }

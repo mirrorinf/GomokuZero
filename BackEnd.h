@@ -21,4 +21,6 @@ float quickEvaluationForTheCurrentPlayer(GomokuState *self);
 
 int gameTerminated(GomokuState *self);
 
+typedef float (*evaluationBasedOnCurrentStateOnly)(GomokuState *);
+
 #endif

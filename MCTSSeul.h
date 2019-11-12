@@ -10,7 +10,7 @@ typedef struct __MCTS_Node {
     GomokuState *current;
     struct __MCTS_Node *children[225];
     struct __MCTS_Node *parent;
-    int count, whiteWin, isLeaf;
+    int count, currentWin, isLeaf;
     float valuationForCurrentPlayer;
 } MCTSNode;
 
@@ -22,6 +22,6 @@ int expandTree(MCTSNode *self, int atLine, int atColumn);
 /* if the position in children is NULL fatal error */
 MCTSNode *newRootNodeTransistedWithMove(MCTSNode *self, int atLine, int atColumn);
 
-void rolloutAndFeedback(MCTSNode *self);
+void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evaluate);
 
 #endif
