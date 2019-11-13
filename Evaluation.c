@@ -174,10 +174,10 @@ float quickEvaluationForTheCurrentPlayer(GomokuState *self) {
             for (j = 0; j < 4; j++) {
                 result += tempNumber[j];
                 if (tempNumber[j] == 4) {
-                    result += detectWhiteFour(self, r, s, j, tempOffset[j]) * 20;           
+                    result += detectWhiteFour(self, r, s, j, tempOffset[j]) * (50 + self->nextMoveParty * 20);           
                 } else {
-                    result += detectWhiteDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * 20;
-                    result += detectLiveThreeOfTheWhitePlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * 35;
+                    result += detectWhiteDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * (30 + self->nextMoveParty * 10);
+                    result += detectLiveThreeOfTheWhitePlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * (45 + self->nextMoveParty * 10);
                 }
             }
         } else if (stateAtPosition(self, r, s) == kGomokuPlayerBlack) {
@@ -185,17 +185,17 @@ float quickEvaluationForTheCurrentPlayer(GomokuState *self) {
             for (j = 0; j < 4; j++) {
                 result -= tempNumber[j];
                 if (tempNumber[j] == 4) {
-                    result -= detectBlackFour(self, r, s, j, tempOffset[j]) * 20;        
+                    result -= detectBlackFour(self, r, s, j, tempOffset[j]) * (50 - self->nextMoveParty * 20);
                 } else {
-                    result -= detectBlackDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * 20;
-                    result -= detectLiveThreeOfTheBlackPlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * 35;
+                    result -= detectBlackDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * (50 - self->nextMoveParty * 20);
+                    result -= detectLiveThreeOfTheBlackPlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * (45 - self->nextMoveParty * 10);
                 }
             }
         }
-        ev += result * expf(-((r-8)*(r-8) + (s-8)*(s-8)) / 200.0);
+        ev += result * expf(-(fabsf(r-8) + fabsf(s-8)) / 15.0);
     }
 
-    ev = -1.0/130 * ev * self->nextMoveParty;
+    ev = -1.0/140 * ev * self->nextMoveParty;
     if (ev > 2) {
         return 4;
     }
