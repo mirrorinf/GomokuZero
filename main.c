@@ -23,28 +23,16 @@ int main(int argc, const char * argv[]) {
     whiteData = NULL;
     
     while (1) {
-        displayGomokuState(s);
+        sprintf(buffer, "%f", quickEvaluationForTheCurrentPlayer(s));
+        displayGomokuState(s, buffer);
         if (s->nextMoveParty == kGomokuPlayerBlack) {
             black(s, blackData);
         } else {
             white(s, whiteData);
         }
 
-        printf("issue rollout?\n");
-        c = getchar();
-        c = getchar();
-        if (c == 'y') {
-            fprintf(log, "issue\n");
-            root = createRootNodeWithCurrentSituation(s);
-            for (j = 0; j < 20000; j++) {
-                rolloutAndFeedback(root, quickEvaluationForTheCurrentPlayer);
-            }
-            fprintf(log, "main: %d %d %f\n", root->count, root->currentWin, root->valuationForCurrentPlayer);
-            fflush(log);
-        }
-
         if ((state = gameTerminated(s)) != kGameHasNotYetTerminated) {
-            displayGomokuState(s);
+            displayGomokuState(s, NULL);
             encodeGameTerninationMessage(state, buffer);
             printf("%s\n", buffer);
             break;

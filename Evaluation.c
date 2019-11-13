@@ -1,4 +1,5 @@
 #include "BackEnd.h"
+#include <math.h>
 
 /*  There are diffrences in detecting black against white shapes mainly due to forbidden overline
     Split into dedicated functions to reduce the size of a single function 
@@ -161,37 +162,45 @@ float quickEvaluationForTheCurrentPlayer(GomokuState *self) {
     int result, tempNumber[4], tempOffset[4];
     int i, j, r, s;
     float ev;
-    result = 0;
+
+    ev = 0;
 
     for (i = 0; i < 225; i++) {
+        result = 0;
         r = i / 15 + 1;
         s = i % 15 + 1;
-        continuingAtDirections(self, r, s, kGomokuPlayerWhite, tempNumber, tempOffset);
-        for (j = 0; j < 4; j++) {
-            if (tempNumber[j] == 4) {
-                result += detectWhiteFour(self, r, s, j, tempOffset[j]) * 5;           
-            } else {
-                result += detectWhiteDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * 5;
-                result += detectLiveThreeOfTheWhitePlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * 8;
+        if (stateAtPosition(self, r, s) == kGomokuPlayerWhite) {
+            continuingAtDirections(self, r, s, kGomokuPlayerWhite, tempNumber, tempOffset);
+            for (j = 0; j < 4; j++) {
+                result += tempNumber[j];
+                if (tempNumber[j] == 4) {
+                    result += detectWhiteFour(self, r, s, j, tempOffset[j]) * 20;           
+                } else {
+                    result += detectWhiteDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * 20;
+                    result += detectLiveThreeOfTheWhitePlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * 35;
+                }
+            }
+        } else if (stateAtPosition(self, r, s) == kGomokuPlayerBlack) {
+            continuingAtDirections(self, r, s, kGomokuPlayerBlack, tempNumber, tempOffset);
+            for (j = 0; j < 4; j++) {
+                result -= tempNumber[j];
+                if (tempNumber[j] == 4) {
+                    result -= detectBlackFour(self, r, s, j, tempOffset[j]) * 20;        
+                } else {
+                    result -= detectBlackDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * 20;
+                    result -= detectLiveThreeOfTheBlackPlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * 35;
+                }
             }
         }
-        continuingAtDirections(self, r, s, kGomokuPlayerBlack, tempNumber, tempOffset);
-        for (j = 0; j < 4; j++) {
-            if (tempNumber[j] == 4) {
-                result -= detectBlackFour(self, r, s, j, tempOffset[j]) * 5;           
-            } else {
-                result -= detectBlackDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * 5;
-                result -= detectLiveThreeOfTheBlackPlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * 8;
-            }
-        }
+        ev += result * expf(-((r-8)*(r-8) + (s-8)*(s-8)) / 200.0);
     }
 
-    ev = -1.0/80 * result * self->nextMoveParty;
-    if (ev > 1.2) {
-        return 1.2;
+    ev = -1.0/130 * ev * self->nextMoveParty;
+    if (ev > 2) {
+        return 4;
     }
-    if (ev < -1.2) {
-        return -1.2;
+    if (ev < -2) {
+        return 0;
     }
-    return ev;
+    return ev + 2;
 }
