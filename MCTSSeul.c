@@ -45,7 +45,7 @@ int expandTree(MCTSNode *self, int atLine, int atColumn, evaluationBasedOnCurren
 
     nee->parent = self;
 
-    nee->valuationForCurrentPlayer = evaluate(nee->current);
+    //nee->valuationForCurrentPlayer = evaluate(nee->current);
 
     self->children[serialNumber(atLine, atColumn)] = nee;
     return 0;
@@ -54,7 +54,12 @@ int expandTree(MCTSNode *self, int atLine, int atColumn, evaluationBasedOnCurren
 MCTSNode *newRootNodeTransistedWithMove(MCTSNode *self, int atLine, int atColumn) {
     int index;
     MCTSNode *temp;
+
     index = serialNumber(atLine, atColumn);
+
+    if (self->children[index] == NULL) {
+        expandTree(self, atLine, atColumn, quickEvaluationForTheCurrentPlayer);
+    }
 
     temp = self->children[index];
     self->children[index] = NULL;
@@ -89,7 +94,7 @@ void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evalua
                 changeState(temp, i, j, -temp->nextMoveParty);
                 temp->recentMoveLine = i;
                 temp->recentMoveColumn = j;
-                scores[serialNumber(i, j)] = 1;
+                scores[serialNumber(i, j)] = evaluate(temp) + 0.005;
                 changeState(temp, i, j, kGomokuGridStateUnoccupied);
             }
         }
@@ -132,4 +137,53 @@ void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evalua
             loop = loop->parent;
         }
     }
+
+    destroyGomokuState(temp);
+}
+
+void minimaxSelectNextMove(MCTSNode *self, int *atLine, int *atColumn, evaluationBasedOnCurrentStateOnly evaluate) {
+    int line, column, temp, index;
+    float score[225], max;
+    for (line = 1; line <= 15; line++) {
+        for (column = 1; column <= 15; column++) {
+            index = serialNumber(line, column);
+            score[index] = 0;
+            if (self->children[index] != NULL) {
+                continue;
+            }
+            if (stateAtPosition(self->current, line, column) != kGomokuGridStateUnoccupied) {
+                continue;
+            }
+            expandTree(self, line, column, evaluate);
+            temp = gameTerminated(self->children[index]->current) * self->current->nextMoveParty;
+            score[index] = (float)temp;
+            if (temp > -2000 && temp < 2000) {
+                score[index] = evaluate(self->children[index]->current);
+            }
+        }
+    }
+    max = -1000;
+    for (line = 1; line <= 15; line++) {
+        for (column = 1; column <= 15; column++) {
+            index = serialNumber(line, column);
+            if (score[index] > max) {
+                max = score[index];
+                *atLine = line;
+                *atColumn = column;
+            }
+        }
+    }
+}
+
+void minimaxStupid(GomokuState *self, void *tree) {
+    MCTSNode *root;
+    int line, column;
+
+    root = (MCTSNode *)tree;
+    minimaxSelectNextMove(root, &line, &column, quickEvaluationForTheCurrentPlayer);
+
+    changeState(self, line, column, self->nextMoveParty);
+    self->recentMoveLine = line;
+    self->recentMoveColumn = column;
+    self->nextMoveParty *= -1;
 }

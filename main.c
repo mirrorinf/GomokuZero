@@ -17,8 +17,8 @@ int main(int argc, const char * argv[]) {
     buffer = (char *)malloc(sizeof(char) * StringBufferLengthLimit);
 
     s = initGomokuState();
-    black = changeStateBasedUponUserInput;
-    blackData = NULL;
+    black = minimaxStupid;
+    blackData = createRootNodeWithCurrentSituation(s);
     white = changeStateBasedUponUserInput;
     whiteData = NULL;
     
@@ -30,6 +30,20 @@ int main(int argc, const char * argv[]) {
         } else {
             white(s, whiteData);
         }
+        blackData = newRootNodeTransistedWithMove(blackData, s->recentMoveLine, s->recentMoveColumn);
+        /*
+        c = getchar();
+        c = getchar();
+        if (c == 'y') {
+            root = createRootNodeWithCurrentSituation(s);
+            for (j = 0; j < 50; j++) {
+                rolloutAndFeedback(root, quickEvaluationForTheCurrentPlayer);
+            }
+            fprintf(log, "rollout: %d %d\n", root->currentWin, root->count);
+            fflush(log);
+            destroyEntireSubtree(root);
+        }
+        */
 
         if ((state = gameTerminated(s)) != kGameHasNotYetTerminated) {
             displayGomokuState(s, NULL);

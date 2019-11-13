@@ -23,5 +23,6 @@ int expandTree(MCTSNode *self, int atLine, int atColumn, evaluationBasedOnCurren
 MCTSNode *newRootNodeTransistedWithMove(MCTSNode *self, int atLine, int atColumn);
 
 void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evaluate);
+void minimaxStupid(GomokuState *self, void *tree);
 
 #endif
