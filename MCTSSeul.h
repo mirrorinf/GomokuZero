@@ -18,7 +18,7 @@ MCTSNode *createRootNodeWithCurrentSituation(GomokuState *self);
 void destroyEntireSubtree(MCTSNode *root);
 
 /* -1 on already occupied; do not detect for alredy expanded */
-int expandTree(MCTSNode *self, int atLine, int atColumn);
+int expandTree(MCTSNode *self, int atLine, int atColumn, evaluationBasedOnCurrentStateOnly evaluate);
 /* if the position in children is NULL fatal error */
 MCTSNode *newRootNodeTransistedWithMove(MCTSNode *self, int atLine, int atColumn);
 

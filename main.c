@@ -1,13 +1,18 @@
 #include "Gomoku.h"
 #include "FrontEnd.h"
 #include "BackEnd.h"
+#include "MCTSSeul.h"
 
 int main(int argc, const char * argv[]) {
     GomokuState *s;
     player black, white;
     void *blackData, *whiteData;
-    int state;
-    char *buffer;
+    int state, j;
+    char *buffer, c;
+    MCTSNode *root;
+    FILE *log;
+
+    log = fopen("gomoku.log", "a");
 
     buffer = (char *)malloc(sizeof(char) * StringBufferLengthLimit);
 
@@ -25,6 +30,18 @@ int main(int argc, const char * argv[]) {
             white(s, whiteData);
         }
 
+        printf("issue rollout?\n");
+        c = getchar();
+        c = getchar();
+        if (c == 'y') {
+            fprintf(log, "issue\n");
+            root = createRootNodeWithCurrentSituation(s);
+            for (j = 0; j < 20000; j++) {
+                rolloutAndFeedback(root, quickEvaluationForTheCurrentPlayer);
+            }
+            fprintf(log, "main: %d %d %f\n", root->count, root->currentWin, root->valuationForCurrentPlayer);
+            fflush(log);
+        }
 
         if ((state = gameTerminated(s)) != kGameHasNotYetTerminated) {
             displayGomokuState(s);

@@ -32,7 +32,7 @@ void destroyEntireSubtree(MCTSNode *root) {
     free(root);
 }
 
-int expandTree(MCTSNode *self, int atLine, int atColumn) {
+int expandTree(MCTSNode *self, int atLine, int atColumn, evaluationBasedOnCurrentStateOnly evaluate) {
     MCTSNode *nee;
     if (stateAtPosition(self->current, atLine, atColumn) != kGomokuGridStateUnoccupied) {
         return -1;
@@ -44,6 +44,8 @@ int expandTree(MCTSNode *self, int atLine, int atColumn) {
     nee->current->nextMoveParty *= -1;
 
     nee->parent = self;
+
+    nee->valuationForCurrentPlayer = evaluate(nee->current);
 
     self->children[serialNumber(atLine, atColumn)] = nee;
     return 0;
@@ -65,12 +67,16 @@ MCTSNode *newRootNodeTransistedWithMove(MCTSNode *self, int atLine, int atColumn
 
 void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evaluate) {
     float scores[225], select;
-    int i, j, round;
+    int i, j, round, c;
     GomokuState *temp;
     MCTSNode *loop;
+    FILE *log;
+    log = fopen("gomoku.log", "a");
 
+    c = 0;
     temp = copyState(self->current);
     while ((round = gameTerminated(temp)) == 0) {
+        c++;
         for (i = 0; i < 225; i++) {
             scores[i] = 0;
         }
@@ -83,7 +89,7 @@ void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evalua
                 changeState(temp, i, j, -temp->nextMoveParty);
                 temp->recentMoveLine = i;
                 temp->recentMoveColumn = j;
-                scores[serialNumber(i, j)] = evaluate(temp) + 1.2;
+                scores[serialNumber(i, j)] = 1;
                 changeState(temp, i, j, kGomokuGridStateUnoccupied);
             }
         }
@@ -105,16 +111,25 @@ void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evalua
         temp->recentMoveColumn = j % 15 + 1;
     }
 
-    for (loop = self; loop->parent != NULL; loop = loop->parent) {
+    fprintf(log, "rounds: %d\n", c);
+    fflush(log);
+
+    loop = self;
+    while (1) {
         loop->count++;
         if (-loop->current->nextMoveParty == kGomokuPlayerBlack) {
             if (round < 0) {
                 loop->currentWin++;
             }
         } else {
-            if (round > 0) {
+            if (round > 2000) {
                 loop->currentWin++;
             }
+        }
+        if (loop->parent == NULL) {
+            break;
+        } else {
+            loop = loop->parent;
         }
     }
 }
