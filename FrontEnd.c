@@ -45,7 +45,7 @@ int haveDisplayedPlayer(GomokuState *self, int atLine, int atColumn) {
     return 1;
 }
 
-void displayGomokuState(GomokuState *self) {
+void displayGomokuState(GomokuState *self, const char *additionalMessage) {
     int i, j;
     fflush(stdout);
     system(SystemCommandClearScreen);
@@ -116,6 +116,10 @@ void displayGomokuState(GomokuState *self) {
     printf("   ");
     for (i = 0; i < 15; i++) {
         printf("%c   ", 'A' + i);
+    }
+
+    if (additionalMessage != NULL) {
+        printf("%s\n", additionalMessage);
     }
     printf("\n");
 

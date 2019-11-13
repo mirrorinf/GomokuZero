@@ -5,7 +5,7 @@
 
 #define StringBufferLengthLimit 2048
 
-void displayGomokuState(GomokuState *self);
+void displayGomokuState(GomokuState *self, const char *additionalMessage);
 void changeStateBasedUponUserInput(GomokuState *self, void *meaninglessPlaceholder);
 void encodeGameTerninationMessage(int terminaison, char *buffer);
 
