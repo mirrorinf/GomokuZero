@@ -32,6 +32,7 @@ void destroyEntireSubtree(MCTSNode *root) {
     free(root);
 }
 
+/* no setting: isLeaf; valuation :property */
 int expandTree(MCTSNode *self, int atLine, int atColumn, evaluationBasedOnCurrentStateOnly evaluate) {
     MCTSNode *nee;
     if (stateAtPosition(self->current, atLine, atColumn) != kGomokuGridStateUnoccupied) {
@@ -42,10 +43,11 @@ int expandTree(MCTSNode *self, int atLine, int atColumn, evaluationBasedOnCurren
     nee->current->recentMoveLine = atLine;
     nee->current->recentMoveColumn = atColumn;
     nee->current->nextMoveParty *= -1;
+    nee->isLeaf = 0;
 
     nee->parent = self;
 
-    //nee->valuationForCurrentPlayer = evaluate(nee->current);
+    /*nee->valuationForCurrentPlayer = evaluate(nee->current);*/
 
     self->children[serialNumber(atLine, atColumn)] = nee;
     return 0;
@@ -70,85 +72,15 @@ MCTSNode *newRootNodeTransistedWithMove(MCTSNode *self, int atLine, int atColumn
     return temp;
 }
 
-void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evaluate) {
-    float scores[225], select;
-    int i, j, round, c;
-    GomokuState *temp;
-    MCTSNode *loop;
-    FILE *log;
-    log = fopen("gomoku.log", "a");
+void expandWithScoreBuffer(MCTSNode *self, float *score,  evaluationBasedOnCurrentStateOnly evaluate) {
+    int line, column, index, temp;
 
-    c = 0;
-    temp = copyState(self->current);
-    while ((round = gameTerminated(temp)) == 0) {
-        c++;
-        for (i = 0; i < 225; i++) {
-            scores[i] = 0;
-        }
-        temp->nextMoveParty *= -1;
-        for (i = 1; i <= 15; i++) {
-            for (j = 1; j <= 15; j++) {
-                if (stateAtPosition(temp, i, j) != kGomokuGridStateUnoccupied) {
-                    continue;
-                }
-                changeState(temp, i, j, -temp->nextMoveParty);
-                temp->recentMoveLine = i;
-                temp->recentMoveColumn = j;
-                scores[serialNumber(i, j)] = evaluate(temp) + 0.005;
-                changeState(temp, i, j, kGomokuGridStateUnoccupied);
-            }
-        }
-
-        for (i = 1; i < 225; i++) {
-            scores[i] += scores[i - 1];
-        }
-
-        select = (float)random() / INT32_MAX * scores[224];
-        for (i = 0; i < 225; i++) {
-            if (scores[i] > select) {
-                j = i;
-                break;
-            }
-        }
-
-        changeState(temp, j / 15 + 1, j % 15 + 1, temp->nextMoveParty);
-        temp->recentMoveLine = j / 15 + 1;
-        temp->recentMoveColumn = j % 15 + 1;
-    }
-
-    fprintf(log, "rounds: %d\n", c);
-    fflush(log);
-
-    loop = self;
-    while (1) {
-        loop->count++;
-        if (-loop->current->nextMoveParty == kGomokuPlayerBlack) {
-            if (round < 0) {
-                loop->currentWin++;
-            }
-        } else {
-            if (round > 2000) {
-                loop->currentWin++;
-            }
-        }
-        if (loop->parent == NULL) {
-            break;
-        } else {
-            loop = loop->parent;
-        }
-    }
-
-    destroyGomokuState(temp);
-}
-
-void minimaxSelectNextMove(MCTSNode *self, int *atLine, int *atColumn, evaluationBasedOnCurrentStateOnly evaluate) {
-    int line, column, temp, index;
-    float score[225], max;
     for (line = 1; line <= 15; line++) {
         for (column = 1; column <= 15; column++) {
             index = serialNumber(line, column);
-            score[index] = 0;
+            score[index] = -1000;
             if (self->children[index] != NULL) {
+                score[index] = self->children[index]->valuationForCurrentPlayer / (float)self->children[index]->count;
                 continue;
             }
             if (stateAtPosition(self->current, line, column) != kGomokuGridStateUnoccupied) {
@@ -159,20 +91,97 @@ void minimaxSelectNextMove(MCTSNode *self, int *atLine, int *atColumn, evaluatio
             score[index] = (float)temp;
             if (temp > -2000 && temp < 2000) {
                 score[index] = evaluate(self->children[index]->current);
+            } else {
+                self->children[index]->isLeaf = 1;
+            }
+            self->children[index]->count = 1;
+            self->children[index]->valuationForCurrentPlayer = score[index];
+        }
+    }
+}
+
+void selectMaxMonteCarloDestroy(float *from, int *index, int originalCount, int toBeSelected) {
+    int i, j;
+    float min, r;
+
+    min = 1e10;
+
+    for (i = 0; i < originalCount; i++) {
+        if (from[i] < 0) {
+            from[i] = 0;
+            continue;
+        }
+        if (min > from[i]) {
+            min = from[i];
+        }
+    }
+    min -= 0.001;
+    for (i = 0; i < originalCount; i++) {
+        if (from[i] > min) {
+            from[i] -= min;
+        }
+    }
+
+    for (i = 1; i < originalCount; i++) {
+        from[i] += from[i - 1];
+    }
+
+    for (j = 0; j < toBeSelected; j++) {
+        if (from[originalCount - 1] < 1e-6) {
+            printf("Surrender!\n");
+            exit(-1);
+        }
+        r = (float)rand() / (float)RAND_MAX * from[originalCount - 1];
+        for (i = 0; i < originalCount; i++) {
+            if (from[i] > r) {
+                index[j] = i;
+                r = from[i] - (i > 0 ? from[i - 1] : 0);
+                break;
+            }
+        }
+        for (i = index[j]; i < originalCount; i++) {
+            from[i] -= r;
+        }
+    }
+}
+
+void selectMaxExact(float *from, int *index, int originalCount, int toBeSelected) {
+    float max;
+    int i, j, k, selected;
+
+    for (i = 0; i < toBeSelected; i++) {
+        max = -1e10;
+        for (j = 0; j < originalCount; j++) {
+            selected = 0;
+            for (k = 0; k < i; k++) {
+                if (j == index[k]) {
+                    selected = 1;
+                }
+            }
+            if (!selected) {
+                if (from[j] > max) {
+                    index[i] = j;
+                    max = from[j];
+                }
             }
         }
     }
-    max = -1000;
-    for (line = 1; line <= 15; line++) {
-        for (column = 1; column <= 15; column++) {
-            index = serialNumber(line, column);
-            if (score[index] > max) {
-                max = score[index];
-                *atLine = line;
-                *atColumn = column;
-            }
+}
+
+void minimaxSelectNextMoveStupid(MCTSNode *self, int *atLine, int *atColumn, evaluationBasedOnCurrentStateOnly evaluate) {
+    int temp, i;
+    float score[225], max;
+    
+    expandWithScoreBuffer(self, score, evaluate);
+    max = -100000;
+    for (i = 0; i < 225; i++) {
+        if (score[i] > max) {
+            max = score[i];
+            temp = i;
         }
     }
+    *atLine = temp / 15 + 1;
+    *atColumn = temp % 15 + 1;
 }
 
 void minimaxStupid(GomokuState *self, void *tree) {
@@ -180,7 +189,73 @@ void minimaxStupid(GomokuState *self, void *tree) {
     int line, column;
 
     root = (MCTSNode *)tree;
+    minimaxSelectNextMoveStupid(root, &line, &column, quickEvaluationForTheCurrentPlayer);
+
+    changeState(self, line, column, self->nextMoveParty);
+    self->recentMoveLine = line;
+    self->recentMoveColumn = column;
+    self->nextMoveParty *= -1;
+}
+
+#define MINIMAX_WIDTH 4
+#define MINIMAX_DEPTH 3
+
+void expandAtSingleNodeForDecision(MCTSNode *self, int depth, evaluationBasedOnCurrentStateOnly evaluate) {
+    float score[225];
+    int i, maxIndex[MINIMAX_WIDTH];
+
+    if (depth >= MINIMAX_DEPTH) {
+        return;
+    }
+    if (self->isLeaf) {
+        return;
+    }
+
+    expandWithScoreBuffer(self, score, evaluate);
+    selectMaxExact(score, maxIndex, 225, MINIMAX_WIDTH);
+    for (i = 0; i < MINIMAX_WIDTH; i++) {
+        expandAtSingleNodeForDecision(self->children[maxIndex[i]], depth + 1, evaluate);
+        self->count += self->children[maxIndex[i]]->count;
+        self->valuationForCurrentPlayer += 4 * self->children[maxIndex[i]]->count - self->children[maxIndex[i]]->valuationForCurrentPlayer;
+    }
+}
+
+void minimaxSelectNextMove(MCTSNode *self, int *atLine, int *atColumn, evaluationBasedOnCurrentStateOnly evaluate) {
+    MCTSNode *current;
+    int i, selected;
+    float score[225];
+
+    if (self->isLeaf) {
+        fprintf(stderr, "minimaxSelectNextMove:atLine:atColumn:evaluate: Reached leaf. Must be bug in sequence.\n");
+        exit(-1);
+    }
+
+    expandAtSingleNodeForDecision(self, 1, evaluate);
+
+    for (i = 0; i < 225; i++) {
+        if (self->children[i] == NULL) {
+            score[i] = -3000;
+        } else {
+            score[i] = self->children[i]->valuationForCurrentPlayer / self->children[i]->count;
+        }
+    }
+
+    selectMaxExact(score, &selected, 225, 1);
+    *atLine = selected / 15 + 1;
+    *atColumn = selected % 15 + 1;
+}
+
+void minimax(GomokuState *self, void *tree) {
+    MCTSNode *root;
+    int line, column;
+
+    root = (MCTSNode *)tree;
     minimaxSelectNextMove(root, &line, &column, quickEvaluationForTheCurrentPlayer);
+
+    if (stateAtPosition(self, line, column) != kGomokuGridStateUnoccupied) {
+        printf("Surrender aaa!\n");
+        exit(-1);
+    }
 
     changeState(self, line, column, self->nextMoveParty);
     self->recentMoveLine = line;

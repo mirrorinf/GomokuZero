@@ -2,6 +2,7 @@
 #include "FrontEnd.h"
 #include "BackEnd.h"
 #include "MCTSSeul.h"
+#include <time.h>
 
 int main(int argc, const char * argv[]) {
     GomokuState *s;
@@ -10,17 +11,16 @@ int main(int argc, const char * argv[]) {
     int state, j;
     char *buffer, c;
     MCTSNode *root;
-    FILE *log;
 
-    log = fopen("gomoku.log", "a");
+    srand(time(NULL));
 
     buffer = (char *)malloc(sizeof(char) * StringBufferLengthLimit);
 
     s = initGomokuState();
-    black = minimaxStupid;
+    black = minimax;
     blackData = createRootNodeWithCurrentSituation(s);
-    white = changeStateBasedUponUserInput;
-    whiteData = NULL;
+    white = minimaxStupid;
+    whiteData = createRootNodeWithCurrentSituation(s);
     
     while (1) {
         sprintf(buffer, "%f", quickEvaluationForTheCurrentPlayer(s));
@@ -31,19 +31,8 @@ int main(int argc, const char * argv[]) {
             white(s, whiteData);
         }
         blackData = newRootNodeTransistedWithMove(blackData, s->recentMoveLine, s->recentMoveColumn);
-        /*
-        c = getchar();
-        c = getchar();
-        if (c == 'y') {
-            root = createRootNodeWithCurrentSituation(s);
-            for (j = 0; j < 50; j++) {
-                rolloutAndFeedback(root, quickEvaluationForTheCurrentPlayer);
-            }
-            fprintf(log, "rollout: %d %d\n", root->currentWin, root->count);
-            fflush(log);
-            destroyEntireSubtree(root);
-        }
-        */
+        whiteData = newRootNodeTransistedWithMove(whiteData, s->recentMoveLine, s->recentMoveColumn);
+        getchar();
 
         if ((state = gameTerminated(s)) != kGameHasNotYetTerminated) {
             displayGomokuState(s, NULL);

@@ -192,7 +192,7 @@ float quickEvaluationForTheCurrentPlayer(GomokuState *self) {
                 }
             }
         }
-        ev += result * expf(-(fabsf(r-8) + fabsf(s-8)) / 15.0);
+        ev += result * expf(-( fabsf((float)r-8) > fabsf((float)s-8) ? fabsf((float)r-8) : fabsf((float)s-8)) / 9.0);
     }
 
     ev = -1.0/140 * ev * self->nextMoveParty;
