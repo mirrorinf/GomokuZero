@@ -24,6 +24,6 @@ MCTSNode *newRootNodeTransistedWithMove(MCTSNode *self, int atLine, int atColumn
 
 void rolloutAndFeedback(MCTSNode *self, evaluationBasedOnCurrentStateOnly evaluate);
 void minimaxStupid(GomokuState *self, void *tree);
-void minimax(GomokuState *self, void *tree);
+void minimaxTrue(GomokuState *self, void *tree);
 
 #endif

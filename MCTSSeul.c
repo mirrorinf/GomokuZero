@@ -213,129 +213,108 @@ void minimaxStupid(GomokuState *self, void *tree) {
     self->nextMoveParty *= -1;
 }
 
-#define MINIMAX_WIDTH 3
+void expandWithoutScoring(MCTSNode *self) {
+    int line, column, index, temp;
 
-void expandAtSingleNodeForDecisionWidth1(MCTSNode *self, int depth, evaluationBasedOnCurrentStateOnly evaluate) {
-    float score[225];
-    int i, maxIndex;
-
-    if (depth <= 0) {
-        return;
-    }
-    if (self->isLeaf) {
-        return;
-    }
-
-    expandWithScoreBuffer(self, score, evaluate);
-    selectMaxExact(score, &maxIndex, 225, 1);
-
-    expandAtSingleNodeForDecisionWidth1(self->children[maxIndex], depth - 1, evaluate);
-    self->count += self->children[maxIndex]->count;
-    self->currentLose += self->children[maxIndex]->currentWin;
-    self->currentWin += self->children[maxIndex]->currentLose;
-}
-
-void expandAtSingleNodeForDecision(MCTSNode *self, int depth, evaluationBasedOnCurrentStateOnly evaluate) {
-    float score[225];
-    int i, maxIndex[MINIMAX_WIDTH], wining, losing;
-
-    if (depth <= 0) {
-        return;
-    }
-    if (self->isLeaf) {
-        return;
-    }
-
-    wining = 1;
-    losing = 0;
-
-    expandWithScoreBuffer(self, score, evaluate);
-    selectMaxExact(score, maxIndex, 225, MINIMAX_WIDTH);
-
-    for (i = 0; i < MINIMAX_WIDTH; i++) {
-        expandAtSingleNodeForDecision(self->children[maxIndex[i]], depth - 1, evaluate);
-        self->count += self->children[maxIndex[i]]->count;
-        self->currentLose += self->children[maxIndex[i]]->currentWin;
-        self->currentWin += self->children[maxIndex[i]]->currentLose;
-        if (self->children[maxIndex[i]]->currentMustWin) {
-            losing = 1;
+    for (line = 1; line <= 15; line++) {
+        for (column = 1; column <= 15; column++) {
+            index = serialNumber(line, column);
+            if (self->children[index] != NULL) {
+                continue;
+            }
+            if (stateAtPosition(self->current, line, column) != kGomokuGridStateUnoccupied) {
+                continue;
+            }
+            expandTree(self, line, column);
+            temp = gameTerminated(self->children[index]->current) * self->current->nextMoveParty;
+            if (!(temp > -2000 && temp < 2000)) {
+                self->children[index]->isLeaf = 1;
+                if (temp >= 2000) {
+                    self->children[index]->currentWin += 1;
+                    self->children[index]->currentMustWin = 1;
+                } else {
+                    self->children[index]->currentLose += 1;
+                    self->children[index]->currentMustLose = 1;
+                }
+            }
+            self->children[index]->count = 1;
         }
-        if (!self->children[maxIndex[i]]->currentMustLose) {
-            wining = 0;
-        } 
     }
-    self->currentMustLose = losing;
-    self->currentMustWin = wining;
 }
 
-void minimaxSelectNextMove(MCTSNode *self, int *atLine, int *atColumn, evaluationBasedOnCurrentStateOnly evaluate) {
-    MCTSNode *current;
-    int i, selected, s, temp, tempf;
+#define MINIMAX_EXPAND_DEPTH 3
+#define MINIMAX_EXPAND_WIDTH 4
+
+float minimaxExpandEvaluate(MCTSNode *root, int depth, evaluationBasedOnCurrentStateOnly staticEvaluation) {
+    float temp, choose;
+    int i;
+
     float score[225];
-    FILE *minimaxLog;
-
-    minimaxLog = fopen("minimaxSelectNextMove.log", "a");
-
-    if (self->isLeaf) {
-        fprintf(stderr, "minimaxSelectNextMove:atLine:atColumn:evaluate: Reached leaf. Must be bug in sequence.\n");
-        exit(-1);
-    }
-
-    expandAtSingleNodeForDecision(self, 5, evaluate);
-
-    for (i = 0; i < 225; i++) {
-        if (self->children[i] == NULL) {
-            score[i] = -3000;
+    int chosen[MINIMAX_EXPAND_WIDTH];
+/*
+    printf("%d\n", depth);
+    fflush(stdout);
+*/
+    if (root->isLeaf) {
+        if (root->currentMustWin) {
+            return 4.0;
+        } else if (root->currentMustLose) {
+            return 0.0;
         } else {
-            if (self->children[i]->isLeaf && self->children[i]->currentWin == 1) {
-                selected = i;
-                break;
-            }
-            if (self->children[i]->currentMustWin) {
-                selected = i;
-                break;
-            }
-            if (self->children[i]->currentMustLose) {
-                score[i] = -3000;
-                continue;
-            }
-            if (self->children[i]->count < 2) {
-                score[i] = -3000;
-                continue;
-            }
-            temp = self->children[i]->currentWin > 0 ? self->children[i]->currentWin : 1;
-            tempf = self->children[i]->currentLose > 0 ? self->children[i]->currentLose : 1;
-            score[i] = self->children[i]->valuationForCurrentPlayer + 0.7 * sqrtf(logf(temp) / logf(self->children[i]->count)) - 0.7 * sqrtf(logf(tempf) / logf(self->children[i]->count));
-            fprintf(minimaxLog, "%c%d %f %d %d %d\n", i % 15 + 'A', i / 15 + 1, score[i], self->children[i]->currentLose, self->children[i]->currentWin, self->children[i]->count);
-            fflush(minimaxLog);
+            return 2.0;
         }
     }
-    fclose(minimaxLog);
 
-    selectMaxExact(score, &selected, 225, 1);
-    *atLine = selected / 15 + 1;
-    *atColumn = selected % 15 + 1;
+    if (depth >= MINIMAX_EXPAND_DEPTH) {
+        return staticEvaluation(root->current);
+    }
+
+    expandWithScoreBuffer(root, score, quickEvaluationForTheCurrentPlayer);
+    selectMaxExact(score, chosen, 225, MINIMAX_EXPAND_WIDTH);
+
+    choose = 4;
+    for (i = 0; i < MINIMAX_EXPAND_WIDTH; i++) {
+        if (root->children[chosen[i]] == NULL) {
+            continue;
+        }
+        temp = 4.0 - minimaxExpandEvaluate(root->children[chosen[i]], depth + 1, staticEvaluation);
+        if (temp < choose) {
+            choose = temp;
+        }
+    }
+
+    return choose;
 }
 
-void minimax(GomokuState *self, void *tree) {
+#define FIRST_WIDTH 15
+
+void minimaxTrue(GomokuState *self, void *tree) {
+    float score[225], bests[FIRST_WIDTH];
+    int i, selected, line, column, chosen[FIRST_WIDTH];
     MCTSNode *root;
-    int line, column;
-    FILE *minimaxLog;
 
-    minimaxLog = fopen("minimaxSelectNextMove.log", "a");
-    fprintf(minimaxLog, "minimax:: start round\n");
-    fclose(minimaxLog);
+    root = createRootNodeWithCurrentSituation(self);
 
-    root = (MCTSNode *)tree;
-    minimaxSelectNextMove(root, &line, &column, quickEvaluationForTheCurrentPlayer);
+    expandWithScoreBuffer(root, score, quickEvaluationForTheCurrentPlayer);
+    selectMaxExact(score, chosen, 225, FIRST_WIDTH);
 
-    if (stateAtPosition(self, line, column) != kGomokuGridStateUnoccupied) {
-        printf("Surrender!\n");
-        exit(-1);
+    for (i = 0; i < FIRST_WIDTH; i++) {
+        if (root->children[chosen[i]] == NULL) {
+            bests[i] = -1e5;
+            continue;
+        }
+        bests[i] = minimaxExpandEvaluate(root->children[chosen[i]], 0, quickEvaluationForTheCurrentPlayer);
     }
+
+    selectMaxExact(score, &selected, FIRST_WIDTH, 1);
+
+    line = chosen[selected] / 15 + 1;
+    column = chosen[selected] % 15 + 1;
 
     changeState(self, line, column, self->nextMoveParty);
     self->recentMoveLine = line;
     self->recentMoveColumn = column;
     self->nextMoveParty *= -1;
+
+    destroyEntireSubtree(root);
 }

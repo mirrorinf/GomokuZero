@@ -17,8 +17,9 @@ int main(int argc, const char * argv[]) {
     buffer = (char *)malloc(sizeof(char) * StringBufferLengthLimit);
 
     s = initGomokuState();
-    black = minimax;
-    blackData = createRootNodeWithCurrentSituation(s);
+    black = minimaxTrue;
+    /*blackData = createRootNodeWithCurrentSituation(s);*/
+    blackData = NULL;
     white = changeStateBasedUponUserInput;
     whiteData = NULL;
     
@@ -30,8 +31,7 @@ int main(int argc, const char * argv[]) {
         } else {
             white(s, whiteData);
         }
-        blackData = newRootNodeTransistedWithMove(blackData, s->recentMoveLine, s->recentMoveColumn);
-        /*destroyEntireSubtree(blackData);
+        /*blackData = newRootNodeTransistedWithMove(blackData, s->recentMoveLine, s->recentMoveColumn);
         blackData = createRootNodeWithCurrentSituation(s);*/
 
         if ((state = gameTerminated(s)) != kGameHasNotYetTerminated) {
