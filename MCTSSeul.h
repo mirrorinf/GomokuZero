@@ -10,7 +10,7 @@ typedef struct __MCTS_Node {
     GomokuState *current;
     struct __MCTS_Node *children[225];
     struct __MCTS_Node *parent;
-    int count, currentWin, isLeaf;
+    int count, currentWin, currentLose, isLeaf, currentMustWin, currentMustLose;
     float valuationForCurrentPlayer;
 } MCTSNode;
 
@@ -18,7 +18,7 @@ MCTSNode *createRootNodeWithCurrentSituation(GomokuState *self);
 void destroyEntireSubtree(MCTSNode *root);
 
 /* -1 on already occupied; do not detect for alredy expanded */
-int expandTree(MCTSNode *self, int atLine, int atColumn, evaluationBasedOnCurrentStateOnly evaluate);
+int expandTree(MCTSNode *self, int atLine, int atColumn);
 /* if the position in children is NULL fatal error */
 MCTSNode *newRootNodeTransistedWithMove(MCTSNode *self, int atLine, int atColumn);
 

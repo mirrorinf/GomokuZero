@@ -19,8 +19,8 @@ int main(int argc, const char * argv[]) {
     s = initGomokuState();
     black = minimax;
     blackData = createRootNodeWithCurrentSituation(s);
-    white = minimaxStupid;
-    whiteData = createRootNodeWithCurrentSituation(s);
+    white = changeStateBasedUponUserInput;
+    whiteData = NULL;
     
     while (1) {
         sprintf(buffer, "%f", quickEvaluationForTheCurrentPlayer(s));
@@ -31,8 +31,8 @@ int main(int argc, const char * argv[]) {
             white(s, whiteData);
         }
         blackData = newRootNodeTransistedWithMove(blackData, s->recentMoveLine, s->recentMoveColumn);
-        whiteData = newRootNodeTransistedWithMove(whiteData, s->recentMoveLine, s->recentMoveColumn);
-        getchar();
+        /*destroyEntireSubtree(blackData);
+        blackData = createRootNodeWithCurrentSituation(s);*/
 
         if ((state = gameTerminated(s)) != kGameHasNotYetTerminated) {
             displayGomokuState(s, NULL);
