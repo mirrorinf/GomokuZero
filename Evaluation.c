@@ -3,9 +3,8 @@
 
 /*  There are diffrences in detecting black against white shapes mainly due to forbidden overline
     Split into dedicated functions to reduce the size of a single function 
-    This approach increases code length but improves reduces developing times 
-    These evaluation functions are going to be deprecated when CNN-based evaluation completes
-    So it is not worth while changing gameover judging code for its sake */
+    This approach increases code length but reduces developing times */
+
 int yA_t_ilContinuationWhiteBeginningBySpace(GomokuState *self, int atLine, int atColumn, int atDirection, int consistsOf) {
     int i, line, column;
 

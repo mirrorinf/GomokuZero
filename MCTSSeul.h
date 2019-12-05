@@ -5,7 +5,6 @@
 #define MAX_NODES 100000
 #define ROLLOUT_COUNT 1000
 
-/* Ne pas penser de la performance dans cette implementation */
 typedef struct __MCTS_Node {
     GomokuState *current;
     struct __MCTS_Node *children[225];

@@ -8,7 +8,6 @@ const static int verticalStep[8] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 void continuingAtCurrentPositionOfTheLastPlayerAtDirections(GomokuState *self, int *numberAtEachDirection, int *startingOffsetToTheCurrentPositionOnEachDirection);
 
-/* The whole chunk of quick evaluation is going to be deprecated when CNN-based evaluation is complete */
 /* fonctions utiles pour l'évaluation */
 int isInside(int x, int y);
 int detectBlackFour(GomokuState *self, int atLine, int atColumn, int atDirection, int offset);
