@@ -129,7 +129,7 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
 
 void alphaBeta(GomokuState *self, void *supporting) {
     AlphaBetaSupportingStructure *environment = (AlphaBetaSupportingStructure *)supporting;
-    int i, bestIndex, thisStep;
+    int i, bestIndex, thisStep, terminal;
     float temp, best;
     AlphaBetaTreeNode *root;
     const int step[8] = {1, 59, 4, 97, 101, 141, 17, 223};
@@ -155,7 +155,17 @@ void alphaBeta(GomokuState *self, void *supporting) {
                 continue;
             }
             expandAlphaBetaTreeNode(root, i);
+            assert(&(root->children[i]) != NULL);
+            terminal = gameTerminated(&(root->children[i]->situation));
+            if (terminal > 2000) {
+                bestIndex = i;
+                break;
+            } else if (terminal < -2000) {
+                continue;
+            }
             temp = alphaBetaMinimax(environment, root->children[i], 3, 0, 0, 100);
+            destroyAlphaBetaEntireSubtree(root->children[i]);
+            root->children[i] = NULL;
             if (temp > best) {
                 best = temp;
                 bestIndex = i;
@@ -172,7 +182,17 @@ void alphaBeta(GomokuState *self, void *supporting) {
                 continue;
             }
             expandAlphaBetaTreeNode(root, i);
+            assert(&(root->children[i]) != NULL);
+            terminal = gameTerminated(&(root->children[i]->situation));
+            if (terminal < -2000) {
+                bestIndex = i;
+                break;
+            } else if (terminal > 2000) {
+                continue;
+            }
             temp = alphaBetaMinimax(environment, root->children[i], 3, 1, 0, 100);
+            destroyAlphaBetaEntireSubtree(root->children[i]);
+            root->children[i] = NULL;
             if (temp < best) {
                 best = temp;
                 bestIndex = i;

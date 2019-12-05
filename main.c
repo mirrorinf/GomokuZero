@@ -24,6 +24,7 @@ int main(int argc, const char * argv[]) {
     whiteData = NULL;
     
     while (1) {
+        getchar();
         sprintf(buffer, "%f", quickEvaluationForTheCurrentPlayer(s));
         displayGomokuState(s, buffer);
         if (s->nextMoveParty == kGomokuPlayerBlack) {
