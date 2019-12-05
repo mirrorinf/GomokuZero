@@ -36,4 +36,11 @@ GomokuState *copyState(GomokuState *self);
 char stateAtPosition(GomokuState *self, int atLine, int atColumn);
 void changeState(GomokuState *self, int atLine, int atColumn, char toState);
 
+int serialNumber(int atLine, int atColumn);
+
+/* Consider only positions that are adjacent to the current stones */
+int isAdjecentToSituation(GomokuState *self, int line, int column);
+
+int isInside(int x, int y);
+
 #endif /* Gomoku_h */

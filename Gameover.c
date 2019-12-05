@@ -2,10 +2,6 @@
 
 #include "BackEnd.h"
 
-int isInside(int x, int y) {
-    return (x <= 15 && x >= 1) && (y <= 15 && y >= 1);
-}
-
 int yA_t_ilContinuationBlackUnobstructedBeginningBySpace(GomokuState *self, int atLine, int atColumn, int atDirection, int consistsOf) {
     int i, line, column;
 

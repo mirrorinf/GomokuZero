@@ -53,3 +53,23 @@ GomokuState *copyState(GomokuState *self) {
 
     return newSelf;
 }
+
+int serialNumber(int atLine, int atColumn) {
+    return (atLine - 1) * 15 + (atColumn - 1);
+}
+
+int isInside(int x, int y) {
+    return (x <= 15 && x >= 1) && (y <= 15 && y >= 1);
+}
+
+int isAdjecentToSituation(GomokuState *self, int line, int column) {
+    const int horizontalStep[8] = {1, 1, 0, -1, -1, -1, 0, 1}; 
+    const int verticalStep[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+    int i = 0;
+    for (i = 0; i < 8; i++) {
+        if (isInside(line + verticalStep[i], column + horizontalStep[i]) && stateAtPosition(self, line + verticalStep[i], column + horizontalStep[i]) != kGomokuGridStateUnoccupied) {
+            return 1;
+        }
+    }
+    return 0;
+}

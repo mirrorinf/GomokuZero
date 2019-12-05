@@ -11,12 +11,19 @@ typedef struct __________ALPHA_BETA_TREE_NODE {
 
 typedef struct {
     AlphaBetaTreeNode *root;
+    evaluationBasedOnCurrentStateOnly evaluate;
+    int stepCount;
 } AlphaBetaSupportingStructure;
 
-AlphaBetaTreeNode *createTreeWithState(GomokuState *self);
+AlphaBetaTreeNode *createAlphaBetaTreeWithState(GomokuState *self);
 void destroyAlphaBetaEntireSubtree(AlphaBetaTreeNode *self);
 
-player alphaBeta;
+AlphaBetaSupportingStructure *createAlphaBetaSupportingStructureWithState(GomokuState *self, evaluationBasedOnCurrentStateOnly heuristic);
+void destroyAlphaBetaSupportingStructure(AlphaBetaSupportingStructure *self);
+
+void alphaBeta(GomokuState *self, void *supporting);
 void changeAlphaBetaSupportingStructure(AlphaBetaSupportingStructure *self, int opponentLine, int opponentColumn);
+
+void expandAlphaBetaTreeNode(AlphaBetaTreeNode *self, int index);
 
 #endif

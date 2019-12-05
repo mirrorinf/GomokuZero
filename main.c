@@ -3,6 +3,7 @@
 #include "BackEnd.h"
 #include "MCTSSeul.h"
 #include <time.h>
+#include "AlphaBeta.h"
 
 int main(int argc, const char * argv[]) {
     GomokuState *s;
@@ -17,13 +18,12 @@ int main(int argc, const char * argv[]) {
     buffer = (char *)malloc(sizeof(char) * StringBufferLengthLimit);
 
     s = initGomokuState();
-    black = minimaxStupid;
-    blackData = createRootNodeWithCurrentSituation(s);
-    white = minimaxTrue;
+    black = alphaBeta;
+    blackData = createAlphaBetaSupportingStructureWithState(s, quickEvaluationForTheWhitePlayer);
+    white = changeStateBasedUponUserInput;
     whiteData = NULL;
     
     while (1) {
-        getchar();
         sprintf(buffer, "%f", quickEvaluationForTheCurrentPlayer(s));
         displayGomokuState(s, buffer);
         if (s->nextMoveParty == kGomokuPlayerBlack) {
@@ -31,8 +31,8 @@ int main(int argc, const char * argv[]) {
         } else {
             white(s, whiteData);
         }
-        blackData = newRootNodeTransistedWithMove(blackData, s->recentMoveLine, s->recentMoveColumn);
-        /*blackData = createRootNodeWithCurrentSituation(s);*/
+
+        ((AlphaBetaSupportingStructure *)blackData)->stepCount++;
 
         if ((state = gameTerminated(s)) != kGameHasNotYetTerminated) {
             displayGomokuState(s, NULL);

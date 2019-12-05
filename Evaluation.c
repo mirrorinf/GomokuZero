@@ -203,3 +203,54 @@ float quickEvaluationForTheCurrentPlayer(GomokuState *self) {
     }
     return ev + 2;
 }
+
+float quickEvaluationForTheWhitePlayer(GomokuState *self) {
+    int result, tempNumber[4], tempOffset[4];
+    int i, j, r, s;
+    float ev;
+
+    ev = 0;
+
+    for (i = 0; i < 225; i++) {
+        result = 0;
+        r = i / 15 + 1;
+        s = i % 15 + 1;
+        if (stateAtPosition(self, r, s) == kGomokuPlayerWhite) {
+            continuingAtDirections(self, r, s, kGomokuPlayerWhite, tempNumber, tempOffset);
+            for (j = 0; j < 4; j++) {
+                result += tempNumber[j];
+                if (tempNumber[j] == 4) {
+                    result += detectWhiteFour(self, r, s, j, tempOffset[j]) * (50 + self->nextMoveParty * 20);           
+                } else {
+                    result += detectWhiteDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * (30 + self->nextMoveParty * 10);
+                    result += detectLiveThreeOfTheWhitePlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * (45 + self->nextMoveParty * 10);
+                }
+            }
+        } else if (stateAtPosition(self, r, s) == kGomokuPlayerBlack) {
+            continuingAtDirections(self, r, s, kGomokuPlayerBlack, tempNumber, tempOffset);
+            for (j = 0; j < 4; j++) {
+                result -= tempNumber[j];
+                if (tempNumber[j] == 4) {
+                    result -= detectBlackFour(self, r, s, j, tempOffset[j]) * (50 - self->nextMoveParty * 20);
+                } else {
+                    result -= detectBlackDiscontinuingFour(self, r, s, j, tempNumber[j], tempOffset[j]) * (50 - self->nextMoveParty * 20);
+                    result -= detectLiveThreeOfTheBlackPlayerOnDirections(self, r, s, j, tempNumber[j], tempOffset[j]) * (45 - self->nextMoveParty * 10);
+                }
+            }
+        }
+        ev += result * expf(-( fabsf((float)r-8) > fabsf((float)s-8) ? fabsf((float)r-8) : fabsf((float)s-8)) / 9.0);
+    }
+
+    ev *= 1.0/5.6;
+    if (ev > 50) {
+        return 100;
+    }
+    if (ev < -50) {
+        return 0;
+    }
+    return ev + 50;
+}
+
+float quickEvaluationForTheBlackPlayer(GomokuState *self) {
+    return 100 - quickEvaluationForTheWhitePlayer(self);
+}

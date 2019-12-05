@@ -1,10 +1,6 @@
 #include "MCTSSeul.h"
 #include <math.h>
 
-int serialNumber(int atLine, int atColumn) {
-    return (atLine - 1) * 15 + (atColumn - 1);
-}
-
 MCTSNode *createRootNodeWithCurrentSituation(GomokuState *self) {
     GomokuState *copied;
     MCTSNode *created;
