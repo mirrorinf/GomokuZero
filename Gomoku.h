@@ -13,7 +13,7 @@
 #define kGomokuPlayerWhite 1
 
 typedef struct __GomokuState {
-    char *grid;
+    unsigned char board[57];
     int recentMoveLine, recentMoveColumn, nextMoveParty;
 } GomokuState;
 
@@ -32,7 +32,6 @@ GomokuState *initGomokuState();
 void destroyGomokuState(GomokuState *self);
 
 GomokuState *copyState(GomokuState *self);
-void UNSAFEcopyImage(GomokuState *self, float *destination, int party);/* not yet implemented */
 
 char stateAtPosition(GomokuState *self, int atLine, int atColumn);
 void changeState(GomokuState *self, int atLine, int atColumn, char toState);

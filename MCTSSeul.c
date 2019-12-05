@@ -1,5 +1,4 @@
 #include "MCTSSeul.h"
-
 #include <math.h>
 
 int serialNumber(int atLine, int atColumn) {
@@ -242,8 +241,8 @@ void expandWithoutScoring(MCTSNode *self) {
     }
 }
 
-#define MINIMAX_EXPAND_DEPTH 3
-#define MINIMAX_EXPAND_WIDTH 4
+#define MINIMAX_EXPAND_DEPTH 4
+#define MINIMAX_EXPAND_WIDTH 5
 
 float minimaxExpandEvaluate(MCTSNode *root, int depth, evaluationBasedOnCurrentStateOnly staticEvaluation) {
     float temp, choose;
@@ -251,10 +250,7 @@ float minimaxExpandEvaluate(MCTSNode *root, int depth, evaluationBasedOnCurrentS
 
     float score[225];
     int chosen[MINIMAX_EXPAND_WIDTH];
-/*
-    printf("%d\n", depth);
-    fflush(stdout);
-*/
+
     if (root->isLeaf) {
         if (root->currentMustWin) {
             return 4.0;
@@ -270,6 +266,7 @@ float minimaxExpandEvaluate(MCTSNode *root, int depth, evaluationBasedOnCurrentS
     }
 
     expandWithScoreBuffer(root, score, quickEvaluationForTheCurrentPlayer);
+
     selectMaxExact(score, chosen, 225, MINIMAX_EXPAND_WIDTH);
 
     choose = 4;
@@ -286,7 +283,7 @@ float minimaxExpandEvaluate(MCTSNode *root, int depth, evaluationBasedOnCurrentS
     return choose;
 }
 
-#define FIRST_WIDTH 15
+#define FIRST_WIDTH 16
 
 void minimaxTrue(GomokuState *self, void *tree) {
     float score[225], bests[FIRST_WIDTH];

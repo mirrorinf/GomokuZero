@@ -8,8 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
 
 include_directories("${PROJECT_SOURCE_DIR}")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall --std=c89 -Ofast")
-
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall --std=c89 -O3")
 add_library(public ${PROJECT_SOURCE_DIR}/GomokuPublic.c)
 add_library(FrontEnd ${PROJECT_SOURCE_DIR}/FrontEnd.c)
 add_library(BackEnd ${PROJECT_SOURCE_DIR}/Gameover.c ${PROJECT_SOURCE_DIR}/Evaluation.c)
