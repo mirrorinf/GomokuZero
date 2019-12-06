@@ -1,7 +1,6 @@
 #include "Gomoku.h"
 #include "FrontEnd.h"
 #include "BackEnd.h"
-#include "MCTSSeul.h"
 #include <time.h>
 #include "AlphaBeta.h"
 
@@ -11,7 +10,6 @@ int main(int argc, const char * argv[]) {
     void *blackData, *whiteData;
     int state, j;
     char *buffer, c;
-    MCTSNode *root;
 
     srand(time(NULL));
 
@@ -24,8 +22,7 @@ int main(int argc, const char * argv[]) {
     whiteData = NULL;
     
     while (1) {
-        getchar();
-        sprintf(buffer, "%f", quickEvaluationForTheCurrentPlayer(s));
+        sprintf(buffer, "%f\n %lu %lu", quickEvaluationForTheWhitePlayer(s), ((AlphaBetaSupportingStructure *)blackData)->cache->cacheHit, ((AlphaBetaSupportingStructure *)blackData)->cache->cacheLookup);
         displayGomokuState(s, buffer);
         if (s->nextMoveParty == kGomokuPlayerBlack) {
             black(s, blackData);

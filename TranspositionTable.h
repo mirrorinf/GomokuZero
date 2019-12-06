@@ -9,10 +9,13 @@ typedef struct {
     unsigned char *depth;
     size_t capacity;
     unsigned char *occupied;
+    unsigned long cacheHit, cacheLookup;
 } TranspositionTable;
 
 TranspositionTable *createTranspositionTable(size_t capacity);
 void destroyTranspositionTable(TranspositionTable *self);
+
+void resetTranspositionTable(TranspositionTable *self);
 
 /* 0 on not found; 1 on found */
 int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *board, float *output);

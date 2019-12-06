@@ -37,6 +37,12 @@ AlphaBetaSupportingStructure *createAlphaBetaSupportingStructureWithState(Gomoku
     newSelf->root = createAlphaBetaTreeWithState(self);
     newSelf->evaluate = heuristic;
     newSelf->stepCount = 0;
+    newSelf->cache = createTranspositionTable(50000000);
+
+    if (newSelf->cache == NULL) {
+        fprintf(stderr, "Transposition allocation failed. Abort.\n");
+        abort();
+    }
 
     return newSelf;
 }
@@ -77,6 +83,10 @@ void expandAlphaBetaTreeNode(AlphaBetaTreeNode *self, int index) {
 float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeNode *node, int depth, int isMaxPlayer, float alpha, float beta) {
     int terminal, i;
     float best, temp;
+
+    if (lookupInTranspositionTable(environment->cache, (unsigned char *)&((node->situation).board), &best)) {
+        return best;
+    }
 
     terminal = gameTerminated(&(node->situation));
     if (terminal > 2000) {
@@ -125,6 +135,8 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
         }
     }
 
+    storeInTranspositionTable(environment->cache, (unsigned char *)&((node->situation).board), best, depth);
+
     return best;
 }
 
@@ -142,6 +154,8 @@ void alphaBeta(GomokuState *self, void *supporting) {
         self->nextMoveParty *= -1;
         return;
     }
+
+    resetTranspositionTable(environment->cache);
 
     root = createAlphaBetaTreeWithState(self);
 

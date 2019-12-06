@@ -1,11 +1,3 @@
-//
-//  GomokuPublic.c
-//  Gomoku
-//
-//  Created by ChuXiaoMin on 2019/9/20.
-//  Copyright © 2019 ChuXiaoMin. All rights reserved.
-//
-
 #include "Gomoku.h"
 
 GomokuState *initGomokuState() {

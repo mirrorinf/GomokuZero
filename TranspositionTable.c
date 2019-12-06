@@ -38,7 +38,9 @@ TranspositionTable *createTranspositionTable(size_t capacity) {
         free(self);
         return NULL;
     }
-    memset(self->occupied, 0, sizeof(unsigned char) * capacity);
+
+    self->cacheHit = 0;
+    self->cacheLookup = 0;
 
     return self;
 }
@@ -48,6 +50,10 @@ void destroyTranspositionTable(TranspositionTable *self) {
     free(self->depth);
     free(self->score);
     free(self);
+}
+
+void resetTranspositionTable(TranspositionTable *self) {
+    memset(self->occupied, 0, sizeof(unsigned char) * self->capacity);
 }
 
 /* 32-bit PJW hash function for fixed length */
@@ -68,11 +74,14 @@ static unsigned long hashFunction(const unsigned char *str) {
 int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *board, float *output) {
     unsigned long address = hashFunction(board) % self->capacity;
 
+    self->cacheLookup++;
+
     if (!self->occupied[address]) {
         return 0;
     }
-    if (memcmp(board, &(self->boardStates[address]), sizeof(unsigned char) * 57)) {
+    if (memcmp(board, &(self->boardStates[57 * address]), sizeof(unsigned char) * 57) == 0) {
         *output = self->score[address];
+        self->cacheHit++;
         return 1;
     }
     return 0;
@@ -81,13 +90,11 @@ int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *bo
 void storeInTranspositionTable(TranspositionTable *self, const unsigned char *board, float score, unsigned char depth) {
     unsigned long address = hashFunction(board) % self->capacity;
 
-    if (self->occupied[address]) {
-        if (self->depth[address] <= depth) {
-            return;
-        }
+    if (self->occupied[address] && self->depth[address] <= depth) {
+        return;
     }
 
-    memcpy(&(self->boardStates[address]), board, sizeof(unsigned char) * 57);
+    memcpy(&(self->boardStates[57 * address]), board, sizeof(unsigned char) * 57);
     self->depth[address] = depth;
     self->occupied[address] = 1;
     self->score[address] = score;

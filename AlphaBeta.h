@@ -2,6 +2,7 @@
 #define GOMOKU_ALPHA_BETA_SEARCH_HEADER
 
 #include "BackEnd.h"
+#include "TranspositionTable.h"
 
 typedef struct __________ALPHA_BETA_TREE_NODE {
     float value;
@@ -13,6 +14,7 @@ typedef struct {
     AlphaBetaTreeNode *root;
     evaluationBasedOnCurrentStateOnly evaluate;
     int stepCount;
+    TranspositionTable *cache;
 } AlphaBetaSupportingStructure;
 
 AlphaBetaTreeNode *createAlphaBetaTreeWithState(GomokuState *self);
