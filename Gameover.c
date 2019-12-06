@@ -217,19 +217,18 @@ int gameTerminated(GomokuState *self) {
     continuingAtDirections(self, self->recentMoveLine, self->recentMoveColumn, -self->nextMoveParty, numberAtDirections, offsetOfDirections);
 
     if (-self->nextMoveParty == kGomokuPlayerBlack) {
-        /* detect overline here; overline first */
-        for (i = 0; i < 4; i++) {
-            if (numberAtDirections[i] > 5) {
-                return kGameTerminatedBlackForbiddenOverline;
-            }
-        }
         /* N y a plus forbidden move; when forbidden pattern and 5 appear simultouneously, consider 5 first */
         for (i = 0; i < 4; i++) {
             if (numberAtDirections[i] == 5) {
                 return kGameTerminatedBlackWon;
             }
         }
-
+        /* detect overline here; overline first */
+        for (i = 0; i < 4; i++) {
+            if (numberAtDirections[i] > 5) {
+                return kGameTerminatedBlackForbiddenOverline;
+            }
+        }
         /* detect double four here */
         countOfUndeadFour = 0;
         for (i = 0; i < 4; i++) {
