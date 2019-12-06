@@ -25,6 +25,7 @@ void destroyAlphaBetaSupportingStructure(AlphaBetaSupportingStructure *self);
 
 void alphaBeta(GomokuState *self, void *supporting);
 void changeAlphaBetaSupportingStructure(AlphaBetaSupportingStructure *self, int opponentLine, int opponentColumn);
+void alphaBetaStepCount(void *self);
 
 void expandAlphaBetaTreeNode(AlphaBetaTreeNode *self, int index);
 

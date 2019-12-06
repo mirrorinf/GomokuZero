@@ -27,6 +27,7 @@ typedef struct __GomokuState {
 #define kGameTerminatedBlackForbiddenOverline 2336
 
 typedef void (*player)(GomokuState *, void *);
+typedef void (*opponentCallback)(void *);
 
 GomokuState *initGomokuState();
 void destroyGomokuState(GomokuState *self);

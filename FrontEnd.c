@@ -121,7 +121,9 @@ void displayGomokuState(GomokuState *self, const char *additionalMessage) {
     if (additionalMessage != NULL) {
         printf("%s\n", additionalMessage);
     }
-    printf("\n");
+    if (self->recentMoveLine != -1) {
+        printf("\nrecent move: %c%d\n", 'A' + self->recentMoveColumn - 1, self->recentMoveLine);
+    }
 
     fflush(stdout);
 }
@@ -195,4 +197,8 @@ void encodeGameTerninationMessage(int terminaison, char *buffer) {
     default:
         break;
     }
+}
+
+void meaninglessPlaceholder(void *meaningless) {
+
 }

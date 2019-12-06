@@ -222,3 +222,7 @@ void alphaBeta(GomokuState *self, void *supporting) {
 
     destroyAlphaBetaEntireSubtree(root);
 }
+
+void alphaBetaStepCount(void *self) {
+    ((AlphaBetaSupportingStructure *)self)->stepCount++;
+}
