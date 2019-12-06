@@ -1,5 +1,6 @@
 #include "AlphaBeta.h"
 #include <assert.h>
+#include "Auxiliaire.h"
 
 AlphaBetaTreeNode *createAlphaBetaTreeWithState(GomokuState *self) {
     AlphaBetaTreeNode *newSelf;
@@ -146,7 +147,7 @@ void alphaBeta(GomokuState *self, void *supporting) {
 
     if (self->nextMoveParty == kGomokuPlayerWhite) {
         best = 0;
-        thisStep = step[rand() % 8];
+        thisStep = step[RANDOM_UNIFORM(8)];
         for (i = thisStep; i != 0; i = (i + thisStep) % 225) {
             if (stateAtPosition(self, i / 15 + 1, i % 15 + 1) != kGomokuGridStateUnoccupied) {
                 continue;
@@ -173,7 +174,7 @@ void alphaBeta(GomokuState *self, void *supporting) {
         }
     } else {
         best = 100;
-        thisStep = step[rand() % 8];
+        thisStep = step[RANDOM_UNIFORM(8)];
         for (i = thisStep; i != 0; i = (i + thisStep) % 225) {
             if (stateAtPosition(self, i / 15 + 1, i % 15 + 1) != kGomokuGridStateUnoccupied) {
                 continue;
