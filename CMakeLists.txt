@@ -1,4 +1,4 @@
-# encoding: UTF-8. no other encoding is known to work.
+cmake_minimum_required(3.10)
 project(Gomoku)
 
 set(PROJECT_SOURCE_DIR .)

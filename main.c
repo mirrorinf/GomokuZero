@@ -32,7 +32,7 @@ int main(int argc, const char **argv) {
     blackCallback = meaninglessPlaceholder;
     if (strcmp(argv[1], "computer") == 0) {
         black = alphaBeta;
-        blackData = createAlphaBetaSupportingStructureWithState(s, quickEvaluationForTheWhitePlayer);
+        blackData = createAlphaBetaSupportingStructureWithState(s, quickEvaluationForTheWhitePlayer, shortsightedEvaluationForTheWhitePlayer);
         blackCallback = alphaBetaStepCount;
     }
     
@@ -41,7 +41,7 @@ int main(int argc, const char **argv) {
     whiteCallback = meaninglessPlaceholder;
     if (strcmp(argv[2], "computer") == 0) {
         white = alphaBeta;
-        whiteData = createAlphaBetaSupportingStructureWithState(s, quickEvaluationForTheWhitePlayer);
+        whiteData = createAlphaBetaSupportingStructureWithState(s, quickEvaluationForTheWhitePlayer, shortsightedEvaluationForTheWhitePlayer);
         whiteCallback = alphaBetaStepCount;
     }
     

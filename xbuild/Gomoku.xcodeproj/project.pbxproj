@@ -1,0 +1,663 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		17687968138B4ACD88C1F236 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 266C0E4190F54A608838F96F /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				64F2588EBEC24180B7685E60 /* CMake Rules */,
+			);
+			dependencies = (
+				D7A57768BA5D4EAA9B8E0000 /* PBXTargetDependency */,
+				6FA49BAA5F524DBAA8BA460F /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+		6D9FC1BE587C485FA19D3F5F /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 30DA108F35B341068681FBCB /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				1DBBCDDD291141D79A6676AE /* CMake Rules */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		10CAED6E634A481987DC35EF /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/FrontEnd.c */ = {isa = PBXBuildFile; fileRef = 9E5E4093255648398387DA67 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/FrontEnd.c */; };
+		4EE4C442B826411A8F5276D1 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/GomokuPublic.c */ = {isa = PBXBuildFile; fileRef = 9D5F9E8DAC7C48E78F7BDC45 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/GomokuPublic.c */; };
+		6982FDEF4FDB428F9C60864B /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 292AA4DA3B76408F998C7B5C /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/CMakeLists.txt */; };
+		7E3F3CFFA3834D6784C3C5F5 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Evaluation.c */ = {isa = PBXBuildFile; fileRef = AD0E0919D1C34118A483816E /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Evaluation.c */; };
+		87F8E20C01D749F0B61FF922 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Gameover.c */ = {isa = PBXBuildFile; fileRef = 07BABC7575704DB2B5F34EC0 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Gameover.c */; };
+		8CE7F6A6EA164319996B4B18 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/AlphaBeta.c */ = {isa = PBXBuildFile; fileRef = 4576480EF5E74287A710D76C /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/AlphaBeta.c */; };
+		9E07156DEF5F463B876EE752 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/TranspositionTable.c */ = {isa = PBXBuildFile; fileRef = 54661DF86E8A4FEDA21D0B02 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/TranspositionTable.c */; };
+		AEF09BB7DAC0401A9B62089D /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/main.c */ = {isa = PBXBuildFile; fileRef = C60CC4E2C92B42EC83899D40 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/main.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		3E4D64730DFF4410B00B64FF /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		48C19B835F644BC2BF66FA72 /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		4B8BB615C38248EE9CE107FA /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+		57576128D1A0414CAF7B06DB /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		2A8F82F3794C4F4FBE01EB2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E193F30C272D4D76B62F1162 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D9FC1BE587C485FA19D3F5F;
+			remoteInfo = ZERO_CHECK;
+		};
+		C27C1A70E4924014A9668588 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E193F30C272D4D76B62F1162 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D9FC1BE587C485FA19D3F5F;
+			remoteInfo = ZERO_CHECK;
+		};
+		C84B45DED63148E08CEDAB2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E193F30C272D4D76B62F1162 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 356A0F5E512346B19C637FF1;
+			remoteInfo = main;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07BABC7575704DB2B5F34EC0 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Gameover.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = Gameover.c; path = Gameover.c; sourceTree = SOURCE_ROOT; };
+		292AA4DA3B76408F998C7B5C /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		4576480EF5E74287A710D76C /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/AlphaBeta.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = AlphaBeta.c; path = AlphaBeta.c; sourceTree = SOURCE_ROOT; };
+		54661DF86E8A4FEDA21D0B02 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/TranspositionTable.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = TranspositionTable.c; path = TranspositionTable.c; sourceTree = SOURCE_ROOT; };
+		9D5F9E8DAC7C48E78F7BDC45 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/GomokuPublic.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = GomokuPublic.c; path = GomokuPublic.c; sourceTree = SOURCE_ROOT; };
+		9E5E4093255648398387DA67 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/FrontEnd.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = FrontEnd.c; path = FrontEnd.c; sourceTree = SOURCE_ROOT; };
+		AD0E0919D1C34118A483816E /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Evaluation.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = Evaluation.c; path = Evaluation.c; sourceTree = SOURCE_ROOT; };
+		C60CC4E2C92B42EC83899D40 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/main.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = main.c; path = main.c; sourceTree = SOURCE_ROOT; };
+		D12D30DA92D44821AFB1F837 /* main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = main; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDB6BA0513FA41C4A9BA9CAE /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2D362E33BF6745999984A77D = {
+			isa = PBXGroup;
+			children = (
+				B037D3A5457D412BA7F0F656 /* main */,
+				98D7DEB5DD82467189431588 /* ALL_BUILD */,
+				5B39AFBCE2044443BC98AEA5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5B39AFBCE2044443BC98AEA5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D12D30DA92D44821AFB1F837 /* main */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		98D7DEB5DD82467189431588 /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				F757304989E6417CBCBCF710 /* CMake Rules */,
+				EDB6BA0513FA41C4A9BA9CAE /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		B037D3A5457D412BA7F0F656 /* main */ = {
+			isa = PBXGroup;
+			children = (
+				CD9A5DF6BB2B4534851A5D1E /* Source Files */,
+				292AA4DA3B76408F998C7B5C /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/CMakeLists.txt */,
+			);
+			name = main;
+			sourceTree = "<group>";
+		};
+		CD9A5DF6BB2B4534851A5D1E /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				4576480EF5E74287A710D76C /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/AlphaBeta.c */,
+				AD0E0919D1C34118A483816E /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Evaluation.c */,
+				9E5E4093255648398387DA67 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/FrontEnd.c */,
+				07BABC7575704DB2B5F34EC0 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Gameover.c */,
+				9D5F9E8DAC7C48E78F7BDC45 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/GomokuPublic.c */,
+				54661DF86E8A4FEDA21D0B02 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/TranspositionTable.c */,
+				C60CC4E2C92B42EC83899D40 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/main.c */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		F757304989E6417CBCBCF710 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		356A0F5E512346B19C637FF1 /* main */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F382536F85347F1B8AD8A11 /* Build configuration list for PBXNativeTarget "main" */;
+			buildPhases = (
+				6070CF5F150948ADB6261B4B /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4B153C3FFA2144F29165AD61 /* PBXTargetDependency */,
+			);
+			name = main;
+			productName = main;
+			productReference = D12D30DA92D44821AFB1F837 /* main */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E193F30C272D4D76B62F1162 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1120;
+			};
+			buildConfigurationList = E8226C0E4C504393A25F71F0 /* Build configuration list for PBXProject "Gomoku" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				48C19B835F644BC2BF66FA72 /* Debug */,
+				3E4D64730DFF4410B00B64FF /* Release */,
+				57576128D1A0414CAF7B06DB /* MinSizeRel */,
+				4B8BB615C38248EE9CE107FA /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 2D362E33BF6745999984A77D;
+			projectDirPath = ../;
+			projectRoot = "";
+			targets = (
+				17687968138B4ACD88C1F236 /* ALL_BUILD */,
+				6D9FC1BE587C485FA19D3F5F /* ZERO_CHECK */,
+				356A0F5E512346B19C637FF1 /* main */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1DBBCDDD291141D79A6676AE /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild -f /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/CMakeScripts/ZERO_CHECK_cmakeRulesBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
+			showEnvVarsInLog = 0;
+		};
+		2F2B3154CDD54971ADBEDAEE = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		464EEA93887940BABC64FE6D = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		64F2588EBEC24180B7685E60 /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild -f /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6070CF5F150948ADB6261B4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CE7F6A6EA164319996B4B18 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/AlphaBeta.c */,
+				7E3F3CFFA3834D6784C3C5F5 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Evaluation.c */,
+				10CAED6E634A481987DC35EF /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/FrontEnd.c */,
+				87F8E20C01D749F0B61FF922 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/Gameover.c */,
+				4EE4C442B826411A8F5276D1 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/GomokuPublic.c */,
+				9E07156DEF5F463B876EE752 /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/TranspositionTable.c */,
+				AEF09BB7DAC0401A9B62089D /* /Users/chuxiaomin/Develop/Gomoku/GomokuZero/main.c */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4B153C3FFA2144F29165AD61 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6D9FC1BE587C485FA19D3F5F /* ZERO_CHECK */;
+			targetProxy = C27C1A70E4924014A9668588 /* PBXContainerItemProxy */;
+		};
+		6FA49BAA5F524DBAA8BA460F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6D9FC1BE587C485FA19D3F5F /* ZERO_CHECK */;
+			targetProxy = 2A8F82F3794C4F4FBE01EB2A /* PBXContainerItemProxy */;
+		};
+		D7A57768BA5D4EAA9B8E0000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 356A0F5E512346B19C637FF1 /* main */;
+			targetProxy = C84B45DED63148E08CEDAB2D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		27411AA5B9F9470CBACF9B07 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		29035E64F3934C2BABA5C70E /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/bin/RelWithDebInfo;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/chuxiaomin/Develop/Gomoku/GomokuZero/.);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = " -Wall --std=c89               -DNDEBUG  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = main;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		2C98ECBC95574F18858805D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		3AF52004F42343359C9354E8 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		4B20CA1BB5E242A1B5C863B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/build;
+			};
+			name = Release;
+		};
+		53B388ED8C2C48DCB873B16A /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/build;
+			};
+			name = MinSizeRel;
+		};
+		605DC15F83044AA09BD331DF /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/build;
+			};
+			name = RelWithDebInfo;
+		};
+		6678F7B16A1E4702B216CCCF /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		825A717941FA434E83C8A98A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		9016A7B837524F758A13E6D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/build;
+			};
+			name = Debug;
+		};
+		ABDCB57D370C49C5A434EC6D /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		BEA67F1B117B4DF5B46B7F8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/bin/Debug;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/chuxiaomin/Develop/Gomoku/GomokuZero/.);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = " -Wall --std=c89            ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = main;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		C5AD432BCEC84490BE270E3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		D2E578D190F94893AEB6F24D /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/bin/MinSizeRel;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/chuxiaomin/Develop/Gomoku/GomokuZero/.);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = " -Wall --std=c89            -DNDEBUG  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = main;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		F52DCF1446994BD0BCF40460 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/bin/Release;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/chuxiaomin/Develop/Gomoku/GomokuZero/.);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = " -Wall --std=c89            -DNDEBUG  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = main;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		FA19DD6208794A75BE72B501 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		266C0E4190F54A608838F96F /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				825A717941FA434E83C8A98A /* Debug */,
+				C5AD432BCEC84490BE270E3C /* Release */,
+				ABDCB57D370C49C5A434EC6D /* MinSizeRel */,
+				3AF52004F42343359C9354E8 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		30DA108F35B341068681FBCB /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA19DD6208794A75BE72B501 /* Debug */,
+				2C98ECBC95574F18858805D4 /* Release */,
+				27411AA5B9F9470CBACF9B07 /* MinSizeRel */,
+				6678F7B16A1E4702B216CCCF /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7F382536F85347F1B8AD8A11 /* Build configuration list for PBXNativeTarget "main" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BEA67F1B117B4DF5B46B7F8C /* Debug */,
+				F52DCF1446994BD0BCF40460 /* Release */,
+				D2E578D190F94893AEB6F24D /* MinSizeRel */,
+				29035E64F3934C2BABA5C70E /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E8226C0E4C504393A25F71F0 /* Build configuration list for PBXProject "Gomoku" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9016A7B837524F758A13E6D4 /* Debug */,
+				4B20CA1BB5E242A1B5C863B4 /* Release */,
+				53B388ED8C2C48DCB873B16A /* MinSizeRel */,
+				605DC15F83044AA09BD331DF /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E193F30C272D4D76B62F1162 /* Project object */;
+}

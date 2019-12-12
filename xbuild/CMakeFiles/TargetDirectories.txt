@@ -1,0 +1,3 @@
+/Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/CMakeFiles/main.dir
+/Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/CMakeFiles/ALL_BUILD.dir
+/Users/chuxiaomin/Develop/Gomoku/GomokuZero/xbuild/CMakeFiles/ZERO_CHECK.dir

@@ -1,6 +1,7 @@
 /* This file contains bullet-proof tested shit. Do not modify. Rewrite if malfunction. */
 
 #include "FrontEnd.h"
+#include "Auxiliaire.h"
 
 #define boxCharacterUpperLeft "┌"
 #define boxCharacterUpperHorizontal "┬"
@@ -11,8 +12,15 @@
 #define boxCharacterBottomLeft "└"
 #define boxCharacterBottomHorizontal "┴"
 #define boxCharacterBottomRight "┘"
+
+#ifdef FRONTEND_BOARD_LARGE
 #define boxCharacterHorizontalContiuation "───"
 #define boxCharacterVerticalMiddle "│"
+#endif
+#ifdef FRONTEND_BOARD_SMALL
+#define boxCharacterHorizontalContiuation "─"
+#define boxCharacterVerticalMiddle ""
+#endif
 
 #define characterPlayerBlack "○"
 #define characterPlayerBlackEmphasized "△"
@@ -50,7 +58,7 @@ void displayGomokuState(GomokuState *self, const char *additionalMessage) {
     fflush(stdout);
     system(SystemCommandClearScreen);
 
-    printf("Welcome to Gomoku Game!\n\n\n");
+    printf("Welcome to Gomoku Game!\nThis is intented to be played on black terminal white characters.\n\n\n");
     
     printf("15 ");
 
@@ -69,12 +77,14 @@ void displayGomokuState(GomokuState *self, const char *additionalMessage) {
     }
     printf("\n");
     for (i = 0; i < 13; i++) {
+#ifdef FRONTEND_BOARD_LARGE
         printf("   ");
         for (j = 0; j < 15; j++) {
             printf(boxCharacterVerticalMiddle);
             printf("   ");
         }
         printf("\n");
+#endif
         printf("%2d ", 14 - i);
         if (!haveDisplayedPlayer(self, 14 - i, 1)) {
             printf(boxCharacterVerticalLeft);
@@ -91,12 +101,14 @@ void displayGomokuState(GomokuState *self, const char *additionalMessage) {
         }
         printf("\n");
     }
+#ifdef FRONTEND_BOARD_LARGE
     printf("   ");
     for (j = 0; j < 15; j++) {
         printf(boxCharacterVerticalMiddle);
         printf("   ");
     }
     printf("\n");
+#endif
     printf(" 1 ");
     if (!haveDisplayedPlayer(self, 1, 1)) {
         printf(boxCharacterBottomLeft);
@@ -114,9 +126,16 @@ void displayGomokuState(GomokuState *self, const char *additionalMessage) {
     printf("\n");
 
     printf("   ");
+#ifdef FRONTEND_BOARD_LARGE
     for (i = 0; i < 15; i++) {
         printf("%c   ", 'A' + i);
     }
+#endif
+#ifdef FRONTEND_BOARD_SMALL
+    for (i = 0; i < 15; i++) {
+        printf("%c ", 'A' + i);
+    }
+#endif
 
     if (additionalMessage != NULL) {
         printf("%s\n", additionalMessage);

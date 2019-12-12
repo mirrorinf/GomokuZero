@@ -13,7 +13,7 @@
 #define kGomokuPlayerWhite 1
 
 typedef struct __GomokuState {
-    unsigned char board[57];
+    unsigned char board[225];
     int recentMoveLine, recentMoveColumn, nextMoveParty;
 } GomokuState;
 

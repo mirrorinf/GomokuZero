@@ -12,15 +12,15 @@ typedef struct __________ALPHA_BETA_TREE_NODE {
 
 typedef struct {
     AlphaBetaTreeNode *root;
-    evaluationBasedOnCurrentStateOnly evaluate;
-    int stepCount;
+    evaluationBasedOnCurrentStateOnly evaluate, fastEvaluate;
+    int stepCount, pruned, issued;
     TranspositionTable *cache;
 } AlphaBetaSupportingStructure;
 
 AlphaBetaTreeNode *createAlphaBetaTreeWithState(GomokuState *self);
 void destroyAlphaBetaEntireSubtree(AlphaBetaTreeNode *self);
 
-AlphaBetaSupportingStructure *createAlphaBetaSupportingStructureWithState(GomokuState *self, evaluationBasedOnCurrentStateOnly heuristic);
+AlphaBetaSupportingStructure *createAlphaBetaSupportingStructureWithState(GomokuState *self, evaluationBasedOnCurrentStateOnly heuristic, evaluationBasedOnCurrentStateOnly fastHeuristic);
 void destroyAlphaBetaSupportingStructure(AlphaBetaSupportingStructure *self);
 
 void alphaBeta(GomokuState *self, void *supporting);

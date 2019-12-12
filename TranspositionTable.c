@@ -9,7 +9,7 @@ TranspositionTable *createTranspositionTable(size_t capacity) {
 
     self->capacity = capacity;
 
-    self->boardStates = (unsigned char *)malloc(sizeof(unsigned char) * 57 * capacity);
+    self->boardStates = (unsigned char *)malloc(sizeof(unsigned char) * 225 * capacity);
     if (self->boardStates == NULL) {
         free(self);
         return NULL;
@@ -30,7 +30,7 @@ TranspositionTable *createTranspositionTable(size_t capacity) {
         return NULL;
     }
 
-    self->occupied = (unsigned char *)malloc(sizeof(unsigned char *) * capacity);
+    self->occupied = (unsigned char *)malloc(sizeof(unsigned char) * capacity);
     if (self->occupied == NULL) {
         free(self->boardStates);
         free(self->depth);
@@ -61,7 +61,7 @@ static unsigned long hashFunction(const unsigned char *str) {
     unsigned long hash = 0, high;
     int i;
 
-    for (i = 0; i < 57; i++) {
+    for (i = 0; i < 225; i++) {
         hash = (hash << 4) + str[i];
         if ((high = hash & 0xF0000000))
             hash ^= high >> 24;
@@ -79,7 +79,7 @@ int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *bo
     if (!self->occupied[address]) {
         return 0;
     }
-    if (memcmp(board, &(self->boardStates[57 * address]), sizeof(unsigned char) * 57) == 0) {
+    if (memcmp(board, &(self->boardStates[225 * address]), sizeof(unsigned char) * 225) == 0) {
         *output = self->score[address];
         self->cacheHit++;
         return 1;
@@ -94,7 +94,7 @@ void storeInTranspositionTable(TranspositionTable *self, const unsigned char *bo
         return;
     }
 
-    memcpy(&(self->boardStates[57 * address]), board, sizeof(unsigned char) * 57);
+    memcpy(&(self->boardStates[225 * address]), board, sizeof(unsigned char) * 225);
     self->depth[address] = depth;
     self->occupied[address] = 1;
     self->score[address] = score;

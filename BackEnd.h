@@ -18,6 +18,7 @@ int boardIsFull(GomokuState *self);
 
 float quickEvaluationForTheCurrentPlayer(GomokuState *self);
 float quickEvaluationForTheWhitePlayer(GomokuState *self);
+float shortsightedEvaluationForTheWhitePlayer(GomokuState *self);
 
 int gameTerminated(GomokuState *self);
 
