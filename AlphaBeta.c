@@ -222,7 +222,7 @@ void alphaBeta(GomokuState *self, void *supporting) {
 
     if (self->nextMoveParty == kGomokuPlayerWhite) {
         best = -1;
-        for (i = 0; i <= 225; i++) {
+        for (i = 0; i < 225; i++) {
             if (stateAtPosition(self, i / 15 + 1, i % 15 + 1) != kGomokuGridStateUnoccupied) {
                 continue;
             }
@@ -261,7 +261,7 @@ void alphaBeta(GomokuState *self, void *supporting) {
         }
     } else {
         best = 101;
-        for (i = 0; i <= 225; i++) {
+        for (i = 0; i < 225; i++) {
             if (stateAtPosition(self, i / 15 + 1, i % 15 + 1) != kGomokuGridStateUnoccupied) {
                 continue;
             }
@@ -285,7 +285,7 @@ void alphaBeta(GomokuState *self, void *supporting) {
         if (!forcedChoice) {
             quicksortShit(indices, 0, count - 1, minimizingCompare, buffer);
             for (i = 0; i < count; i++) {
-                temp = alphaBetaMinimax(environment, root->children[indices[i]], depth, 0, alpha, beta);
+                temp = alphaBetaMinimax(environment, root->children[indices[i]], depth, 1, alpha, beta);
                 destroyAlphaBetaEntireSubtree(root->children[indices[i]]);
                 root->children[indices[i]] = NULL;
                 if (temp < best) {

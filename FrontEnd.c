@@ -22,10 +22,17 @@
 #define boxCharacterVerticalMiddle ""
 #endif
 
+#ifdef FRONTEND_CLAIRE
+#define characterPlayerBlack "●"
+#define characterPlayerBlackEmphasized "▲"
+#define characterPlayerWhite "○"
+#define characterPlayerWhiteEmphasized "△"
+#else
 #define characterPlayerBlack "○"
 #define characterPlayerBlackEmphasized "△"
 #define characterPlayerWhite "●"
 #define characterPlayerWhiteEmphasized "▲"
+#endif
 
 #ifdef WIN32
 #define SystemCommandClearScreen "cls"
@@ -58,7 +65,12 @@ void displayGomokuState(GomokuState *self, const char *additionalMessage) {
     fflush(stdout);
     system(SystemCommandClearScreen);
 
-    printf("Welcome to Gomoku Game!\nThis is intented to be played on black terminal white characters.\n\n\n");
+    printf("Welcome to Gomoku Game!\n");
+#ifdef FRONTEND_CLAIRE
+    printf("This is intented to be played on white terminal black characters.\n\n\n");
+#else
+    printf("This is intented to be played on black terminal white characters.\n\n\n");
+#endif
     
     printf("15 ");
 

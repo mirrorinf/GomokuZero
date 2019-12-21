@@ -296,3 +296,14 @@ float shortsightedEvaluationForTheWhitePlayer(GomokuState *self) {
     }
     return ev;
 }
+
+float winLoseEvaluation(GomokuState *self) {
+    float t = gameTerminated(self);
+    if (t > 2000) {
+        return 110;
+    } else if (t < -2000) {
+        return -10;
+    } else {
+        return 50;
+    }
+}
