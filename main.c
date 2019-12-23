@@ -79,6 +79,12 @@ int main(int argc, const char **argv) {
             break;
         }
     }
+
+    if (strcmp(argv[1], "computer") == 0) {
+        destroyAlphaBetaSupportingStructure((AlphaBetaSupportingStructure *)blackData);
+    } else if (strcmp(argv[2], "computer") == 0) {
+        destroyAlphaBetaSupportingStructure((AlphaBetaSupportingStructure *)whiteData);
+    }
     
     destroyGomokuState(s);
     free(buffer);

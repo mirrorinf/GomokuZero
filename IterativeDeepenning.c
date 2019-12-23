@@ -163,7 +163,11 @@ int alphaBetaIDS(GomokuState *self, AlphaBetaSupportingStructure *environment, i
             } else if (terminal < -2000) {
                 continue;
             }
-            buffer[i] = environment->fastEvaluate(&(root->children[i]->situation));
+            if (lookupInTranspositionTable(environment->cache, root->children[i]->situation.board, &temp)) {
+                buffer[i] = temp;
+            }else {
+                buffer[i] = environment->fastEvaluate(&(root->children[i]->situation));
+            }
             indices[count] = i;
             count++;
         }
@@ -201,7 +205,11 @@ int alphaBetaIDS(GomokuState *self, AlphaBetaSupportingStructure *environment, i
             } else if (terminal > 2000) {
                 continue;
             }
-            buffer[i] = environment->fastEvaluate(&(root->children[i]->situation));
+            if (lookupInTranspositionTable(environment->cache, root->children[i]->situation.board, &temp)) {
+                buffer[i] = temp;
+            }else {
+                buffer[i] = environment->fastEvaluate(&(root->children[i]->situation));
+            }
             indices[count] = i;
             count++;
         }

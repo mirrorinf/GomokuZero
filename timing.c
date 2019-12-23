@@ -23,7 +23,9 @@ unsigned long convertToRepresentation(float milliseconds) {
     unsigned long ns = milliseconds * 1e6;
     return ns * timeInfo.denom / timeInfo.numer;
 }
-
+#else
+#ifdef LINUX
+#endif
 #endif
 
 /* If this is a more formal project then here should be implementations for other platforms */
