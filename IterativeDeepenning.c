@@ -1,6 +1,7 @@
 #include "AlphaBeta.h"
+#include <pthread.h>
 #include <assert.h>
-#include "Auxiliaire.h"
+#include "timing.h"
 
 typedef int (*compareFunction)(int, int, void *);
 
@@ -36,88 +37,6 @@ static void quicksortShit(int *array, int left, int right, compareFunction compa
 
     quicksortShit(array, left, i - 1, compare, compareFunctionAuxiliaire);
     quicksortShit(array, i + 1, right, compare, compareFunctionAuxiliaire);
-}
-
-AlphaBetaTreeNode *createAlphaBetaTreeWithState(GomokuState *self) {
-    AlphaBetaTreeNode *newSelf;
-    int i;
-
-    newSelf = (AlphaBetaTreeNode *)malloc(sizeof(AlphaBetaTreeNode));
-    assert(newSelf != NULL);
-    memcpy(&(newSelf->situation), self, sizeof(GomokuState));
-
-    for (i = 0; i < 225; i++) {
-        newSelf->children[i] = NULL;
-    }
-
-    return newSelf;
-}
-
-void destroyAlphaBetaEntireSubtree(AlphaBetaTreeNode *self) {
-    int i;
-
-    for (i = 0; i < 225; i++) {
-        if (self->children[i] == NULL) {
-            continue;
-        }
-        destroyAlphaBetaEntireSubtree(self->children[i]);
-    }
-
-    free(self);
-}
-
-AlphaBetaSupportingStructure *createAlphaBetaSupportingStructureWithState(GomokuState *self, evaluationBasedOnCurrentStateOnly heuristic, evaluationBasedOnCurrentStateOnly fastHeuristic) {
-    AlphaBetaSupportingStructure *newSelf;
-
-    newSelf = (AlphaBetaSupportingStructure *)malloc(sizeof(AlphaBetaSupportingStructure));
-    assert(newSelf != NULL);
-    newSelf->root = createAlphaBetaTreeWithState(self);
-    newSelf->evaluate = heuristic;
-    newSelf->fastEvaluate = fastHeuristic;
-    newSelf->stepCount = 0;
-    newSelf->cache = createTranspositionTable(10000000);
-    newSelf->pruned = 0;
-
-    if (newSelf->cache == NULL) {
-        fprintf(stderr, "Transposition allocation failed. Abort.\n");
-        abort();
-    }
-
-    return newSelf;
-}
-
-void destroyAlphaBetaSupportingStructure(AlphaBetaSupportingStructure *self) {
-    destroyAlphaBetaEntireSubtree(self->root);
-    destroyTranspositionTable(self->cache);
-    free(self);
-}
-
-void changeAlphaBetaSupportingStructure(AlphaBetaSupportingStructure *self, int opponentLine, int opponentColumn) {
-    int index;
-    AlphaBetaTreeNode *temp;
-
-    index = serialNumber(opponentLine, opponentColumn);
-
-    if (self->root->children[index] == NULL) {
-        expandAlphaBetaTreeNode(self->root, index);
-    }
-
-    temp = self->root;
-    self->root = self->root->children[index];
-    temp->children[index] = NULL;
-    destroyAlphaBetaEntireSubtree(temp);
-}
-
-void expandAlphaBetaTreeNode(AlphaBetaTreeNode *self, int index) {
-    if (self->children[index] != NULL) {
-        return;
-    }
-    self->children[index] = createAlphaBetaTreeWithState(&(self->situation));
-    assert(self->children[index] != NULL);
-    changeState(&(self->children[index]->situation), index / 15 + 1, index % 15 + 1, self->children[index]->situation.nextMoveParty);
-    self->children[index]->situation.recentMoveLine = index / 15 + 1;
-    self->children[index]->situation.recentMoveColumn = index % 15 + 1;
-    self->children[index]->situation.nextMoveParty *= -1;
 }
 
 float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeNode *node, int depth, int isMaxPlayer, float alpha, float beta) {
@@ -318,3 +237,4 @@ void alphaBeta(GomokuState *self, void *supporting) {
 void alphaBetaStepCount(void *self) {
     ((AlphaBetaSupportingStructure *)self)->stepCount++;
 }
+

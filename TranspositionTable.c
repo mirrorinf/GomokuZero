@@ -1,4 +1,5 @@
 #include "TranspositionTable.h"
+#include <assert.h>
 
 TranspositionTable *createTranspositionTable(size_t capacity) {
     TranspositionTable *self;
@@ -82,7 +83,7 @@ int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *bo
     if (memcmp(board, &(self->boardStates[225 * address]), sizeof(unsigned char) * 225) == 0) {
         *output = self->score[address];
         self->cacheHit++;
-        return 1;
+        return self->occupied[address];
     }
     return 0;
 }
@@ -97,5 +98,18 @@ void storeInTranspositionTable(TranspositionTable *self, const unsigned char *bo
     memcpy(&(self->boardStates[225 * address]), board, sizeof(unsigned char) * 225);
     self->depth[address] = depth;
     self->occupied[address] = 1;
+    self->score[address] = score;
+}
+
+void storeInTranspositionTableWithRound(TranspositionTable *self, const unsigned char *board, float score, unsigned char depth, int round) {
+    unsigned long address = hashFunction(board) % self->capacity;
+
+    if (self->occupied[address] && self->depth[address] <= depth) {
+        return;
+    }
+
+    memcpy(&(self->boardStates[225 * address]), board, sizeof(unsigned char) * 225);
+    self->depth[address] = depth;
+    self->occupied[address] = round;
     self->score[address] = score;
 }

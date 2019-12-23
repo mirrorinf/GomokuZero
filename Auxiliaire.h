@@ -11,10 +11,7 @@
 #define FRONTEND_CHARSET_UTF8
 #else
 #ifdef WIN32
-#include <time.h>
-#define RANDOM_UNIFOREM(x) (rand() % (x))
-#define SRANDOM srand(time(NULL));
-#define FRONTEND_CHARSET_GBK
+#error "No support for Windows"
 #else /* Support of other platforms not tested */
 #include <time.h>
 #define RANDOM_UNIFOREM(x) (rand() % (x))

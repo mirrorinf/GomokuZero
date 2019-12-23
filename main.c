@@ -25,6 +25,7 @@ int main(int argc, const char **argv) {
     SRANDOM
 
     buffer = (char *)malloc(sizeof(char) * StringBufferLengthLimit);
+    assert(buffer != NULL);
     s = initGomokuState();
 
     black = changeStateBasedUponUserInput;

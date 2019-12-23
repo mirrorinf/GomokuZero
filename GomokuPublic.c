@@ -1,8 +1,11 @@
 #include "Gomoku.h"
+#include <assert.h>
 
 GomokuState *initGomokuState() {
     GomokuState *self = (GomokuState *)malloc(sizeof(GomokuState));
     int i;
+
+    assert(self != NULL);
 
     for (i = 0; i < 225; i++) {
         self->board[i] = kGomokuGridStateUnoccupied;
@@ -32,6 +35,7 @@ void changeState(GomokuState *self, int atLine, int atColumn, char toState) {
 GomokuState *copyState(GomokuState *self) {
     GomokuState *newSelf;
     newSelf = (GomokuState *)malloc(sizeof(GomokuState));
+    assert(newSelf != NULL);
 
     memcpy(newSelf->board, self->board, sizeof(unsigned char) * 225);
     newSelf->recentMoveLine = self->recentMoveLine;

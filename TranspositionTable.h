@@ -20,5 +20,6 @@ void resetTranspositionTable(TranspositionTable *self);
 /* 0 on not found; 1 on found */
 int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *board, float *output);
 void storeInTranspositionTable(TranspositionTable *self, const unsigned char *board, float score, unsigned char depth);
+void storeInTranspositionTableWithRound(TranspositionTable *self, const unsigned char *board, float score, unsigned char depth, int round);
 
 #endif
