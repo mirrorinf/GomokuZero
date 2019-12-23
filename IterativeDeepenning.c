@@ -275,6 +275,11 @@ void iterativeDeepening(GomokuState *self, void *supporting) {
         environment->strategyLevel = -1;
     }
 
+    if (chosen == -1) {
+        printf("No possible move. Surrender!\n");
+        exit(1);
+    }
+
     changeState(self, chosen / 15 + 1, chosen % 15 + 1, self->nextMoveParty);
     self->recentMoveLine = chosen / 15 + 1;
     self->recentMoveColumn = chosen % 15 + 1;
