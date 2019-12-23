@@ -3,7 +3,8 @@
 
 #define DARWIN
 #define FRONTEND_BOARD_SMALL
-#define FRONTEND_CLAIRE
+/* black terminal: FRONTEND_FONCEE white terminal: FRONTEND_CLAIRE */
+#define FRONTEND_FONCEE
 
 #ifdef DARWIN
 #define RANDOM_UNIFORM arc4random_uniform

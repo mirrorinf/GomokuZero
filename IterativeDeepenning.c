@@ -39,13 +39,13 @@ static void quicksortShit(int *array, int left, int right, compareFunction compa
     quicksortShit(array, i + 1, right, compare, compareFunctionAuxiliaire);
 }
 
-float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeNode *node, int depth, int isMaxPlayer, float alpha, float beta) {
+float alphaBetaMinimaxIDS(AlphaBetaSupportingStructure *environment, AlphaBetaTreeNode *node, int depth, int isMaxPlayer, float alpha, float beta, int round) {
     int terminal, i, indices[225], count = 0;
     float best, temp, buffer[225];
 
     environment->issued++;
 
-    if (lookupInTranspositionTable(environment->cache, (unsigned char *)&((node->situation).board), &best)) {
+    if (lookupInTranspositionTable(environment->cache, (node->situation).board, &best) == round) {
         return best;
     }
 
@@ -57,7 +57,9 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
     }
 
     if (depth <= 0) {
-        return environment->evaluate(&(node->situation));
+        temp = environment->evaluate(&(node->situation));
+        storeInTranspositionTableWithRound(environment->cache, (node->situation).board, temp, depth, round);
+        return temp;
     }
 
     if (isMaxPlayer) {
@@ -70,6 +72,9 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
                 continue;
             }
             expandAlphaBetaTreeNode(node, i);
+            if (lookupInTranspositionTable(environment->cache, node->children[i]->situation.board, &temp)) {
+
+            }
             buffer[i] = environment->fastEvaluate(&(node->children[i]->situation));
             indices[count] = i;
             count++;
@@ -77,7 +82,7 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
         quicksortShit(indices, 0, count - 1, maximizingCompare, buffer);
         assert(count <= 1 || buffer[indices[0]] >= buffer[indices[1]]);
         for (i = 0; i < count; i++) {
-            temp = alphaBetaMinimax(environment, node->children[indices[i]], depth - 1, !isMaxPlayer, alpha, beta);
+            temp = alphaBetaMinimaxIDS(environment, node->children[indices[i]], depth - 1, !isMaxPlayer, alpha, beta, round);
             best = best > temp ? best : temp;
             alpha = alpha > best ? alpha : best;
             if (beta <= alpha) {
@@ -101,7 +106,7 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
         quicksortShit(indices, 0, count - 1, minimizingCompare, buffer);
         assert(count <= 1 || buffer[indices[0]] <= buffer[indices[1]]);
         for (i = 0; i < count; i++) {
-            temp = alphaBetaMinimax(environment, node->children[indices[i]], depth - 1, !isMaxPlayer, alpha, beta);
+            temp = alphaBetaMinimaxIDS(environment, node->children[indices[i]], depth - 1, !isMaxPlayer, alpha, beta, round);
             best = best < temp ? best : temp;
             beta = beta < best ? beta : best;
             if (beta <= alpha) {
@@ -110,18 +115,17 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
         }
     }
 
-    storeInTranspositionTable(environment->cache, (unsigned char *)&((node->situation).board), best, depth);
+    storeInTranspositionTableWithRound(environment->cache, (unsigned char *)&((node->situation).board), best, depth, round);
 
     return best;
 }
 
-void alphaBeta(GomokuState *self, void *supporting) {
+/* depth 3 or 4 ? */
+void alphaBetaIDS(GomokuState *self, void *supporting, int depth) {
     AlphaBetaSupportingStructure *environment = (AlphaBetaSupportingStructure *)supporting;
     int i, bestIndex, thisStep, terminal, forcedChoice = 0, count = 0, indices[225];
     float temp, best, alpha, beta, buffer[225];
     AlphaBetaTreeNode *root;
-    const int step[8] = {1, 59, 4, 97, 101, 141, 17, 223};
-    const int depth = 4;
 
     if (environment->stepCount == 0) {
         changeState(self, 8, 8, self->nextMoveParty);
@@ -167,7 +171,7 @@ void alphaBeta(GomokuState *self, void *supporting) {
         if (!forcedChoice) {
             quicksortShit(indices, 0, count - 1, maximizingCompare, buffer);
             for (i = 0; i < count; i++) {
-                temp = alphaBetaMinimax(environment, root->children[indices[i]], depth, 0, alpha, beta);
+                temp = alphaBetaMinimaxIDS(environment, root->children[indices[i]], depth, 0, alpha, beta, depth);
                 destroyAlphaBetaEntireSubtree(root->children[indices[i]]);
                 root->children[indices[i]] = NULL;
                 if (temp > best) {
@@ -206,7 +210,7 @@ void alphaBeta(GomokuState *self, void *supporting) {
         if (!forcedChoice) {
             quicksortShit(indices, 0, count - 1, minimizingCompare, buffer);
             for (i = 0; i < count; i++) {
-                temp = alphaBetaMinimax(environment, root->children[indices[i]], depth, 1, alpha, beta);
+                temp = alphaBetaMinimaxIDS(environment, root->children[indices[i]], depth, 1, alpha, beta, depth);
                 destroyAlphaBetaEntireSubtree(root->children[indices[i]]);
                 root->children[indices[i]] = NULL;
                 if (temp < best) {
@@ -234,7 +238,5 @@ void alphaBeta(GomokuState *self, void *supporting) {
     destroyAlphaBetaEntireSubtree(root);
 }
 
-void alphaBetaStepCount(void *self) {
-    ((AlphaBetaSupportingStructure *)self)->stepCount++;
-}
+
 

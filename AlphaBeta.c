@@ -126,7 +126,7 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
 
     environment->issued++;
 
-    if (lookupInTranspositionTable(environment->cache, (unsigned char *)&((node->situation).board), &best)) {
+    if (lookupInTranspositionTable(environment->cache, (node->situation).board, &best)) {
         return best;
     }
 
@@ -191,7 +191,7 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
         }
     }
 
-    storeInTranspositionTable(environment->cache, (unsigned char *)&((node->situation).board), best, depth);
+    storeInTranspositionTable(environment->cache, (node->situation).board, best, depth);
 
     return best;
 }
