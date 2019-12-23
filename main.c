@@ -32,7 +32,7 @@ int main(int argc, const char **argv) {
     blackData = NULL;
     blackCallback = meaninglessPlaceholder;
     if (strcmp(argv[1], "computer") == 0) {
-        black = alphaBeta;
+        black = iterativeDeepening;
         blackData = createAlphaBetaSupportingStructureWithState(s, quickEvaluationForTheWhitePlayer, shortsightedEvaluationForTheWhitePlayer);
         blackCallback = alphaBetaStepCount;
     }
@@ -41,13 +41,19 @@ int main(int argc, const char **argv) {
     whiteData = NULL;
     whiteCallback = meaninglessPlaceholder;
     if (strcmp(argv[2], "computer") == 0) {
-        white = alphaBeta;
+        white = iterativeDeepening;
         whiteData = createAlphaBetaSupportingStructureWithState(s, quickEvaluationForTheWhitePlayer, shortsightedEvaluationForTheWhitePlayer);
         whiteCallback = alphaBetaStepCount;
     }
     
     while (1) {
-        sprintf(buffer, "");
+        if (strcmp(argv[1], "computer") == 0) {
+            sprintf(buffer, "Stategy: %d", ((AlphaBetaSupportingStructure *)blackData)->strategyLevel);
+        } else if (strcmp(argv[2], "computer") == 0) {
+            sprintf(buffer, "Stategy: %d", ((AlphaBetaSupportingStructure *)whiteData)->strategyLevel);
+        } else {
+            sprintf(buffer, "");
+        }
         displayGomokuState(s, buffer);
         if (s->nextMoveParty == kGomokuPlayerBlack) {
             black(s, blackData);

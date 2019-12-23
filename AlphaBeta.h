@@ -13,7 +13,7 @@ typedef struct __________ALPHA_BETA_TREE_NODE {
 typedef struct {
     AlphaBetaTreeNode *root;
     evaluationBasedOnCurrentStateOnly evaluate, fastEvaluate;
-    int stepCount, pruned, issued;
+    int stepCount, pruned, issued, isCut, strategyLevel, winingMove;
     TranspositionTable *cache;
 } AlphaBetaSupportingStructure;
 
@@ -28,5 +28,6 @@ void changeAlphaBetaSupportingStructure(AlphaBetaSupportingStructure *self, int 
 void alphaBetaStepCount(void *self);
 
 void expandAlphaBetaTreeNode(AlphaBetaTreeNode *self, int index);
+void iterativeDeepening(GomokuState *self, void *supporting);
 
 #endif

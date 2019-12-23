@@ -1,9 +1,12 @@
 #include "AlphaBeta.h"
-#include <pthread.h>
 #include <assert.h>
 #include "timing.h"
 
 typedef int (*compareFunction)(int, int, void *);
+
+typedef struct {
+    int depth, decision;
+} IDSearchDescriptor;
 
 static int maximizingCompare(int x, int y, void *scoreBuffer) {
     float *score = (float *)scoreBuffer;
@@ -39,11 +42,16 @@ static void quicksortShit(int *array, int left, int right, compareFunction compa
     quicksortShit(array, i + 1, right, compare, compareFunctionAuxiliaire);
 }
 
-float alphaBetaMinimaxIDS(AlphaBetaSupportingStructure *environment, AlphaBetaTreeNode *node, int depth, int isMaxPlayer, float alpha, float beta, int round) {
+float alphaBetaMinimaxIDS(AlphaBetaSupportingStructure *environment, AlphaBetaTreeNode *node, int depth, int isMaxPlayer, float alpha, float beta, int round, unsigned long timeBound) {
     int terminal, i, indices[225], count = 0;
     float best, temp, buffer[225];
 
     environment->issued++;
+
+    if (currentSystemTime() > timeBound) {
+        environment->isCut = 1;
+        return 50;
+    }
 
     if (lookupInTranspositionTable(environment->cache, (node->situation).board, &best) == round) {
         return best;
@@ -73,16 +81,17 @@ float alphaBetaMinimaxIDS(AlphaBetaSupportingStructure *environment, AlphaBetaTr
             }
             expandAlphaBetaTreeNode(node, i);
             if (lookupInTranspositionTable(environment->cache, node->children[i]->situation.board, &temp)) {
-
+                buffer[i] = temp;
+            }else {
+                buffer[i] = environment->fastEvaluate(&(node->children[i]->situation));
             }
-            buffer[i] = environment->fastEvaluate(&(node->children[i]->situation));
             indices[count] = i;
             count++;
         }
         quicksortShit(indices, 0, count - 1, maximizingCompare, buffer);
         assert(count <= 1 || buffer[indices[0]] >= buffer[indices[1]]);
         for (i = 0; i < count; i++) {
-            temp = alphaBetaMinimaxIDS(environment, node->children[indices[i]], depth - 1, !isMaxPlayer, alpha, beta, round);
+            temp = alphaBetaMinimaxIDS(environment, node->children[indices[i]], depth - 1, !isMaxPlayer, alpha, beta, round, timeBound);
             best = best > temp ? best : temp;
             alpha = alpha > best ? alpha : best;
             if (beta <= alpha) {
@@ -99,14 +108,18 @@ float alphaBetaMinimaxIDS(AlphaBetaSupportingStructure *environment, AlphaBetaTr
                 continue;
             }
             expandAlphaBetaTreeNode(node, i);
-            buffer[i] = environment->fastEvaluate(&(node->children[i]->situation));
+            if (lookupInTranspositionTable(environment->cache, node->children[i]->situation.board, &temp)) {
+                buffer[i] = temp;
+            }else {
+                buffer[i] = environment->fastEvaluate(&(node->children[i]->situation));
+            }
             indices[count] = i;
             count++;
         }
         quicksortShit(indices, 0, count - 1, minimizingCompare, buffer);
         assert(count <= 1 || buffer[indices[0]] <= buffer[indices[1]]);
         for (i = 0; i < count; i++) {
-            temp = alphaBetaMinimaxIDS(environment, node->children[indices[i]], depth - 1, !isMaxPlayer, alpha, beta, round);
+            temp = alphaBetaMinimaxIDS(environment, node->children[indices[i]], depth - 1, !isMaxPlayer, alpha, beta, round, timeBound);
             best = best < temp ? best : temp;
             beta = beta < best ? beta : best;
             if (beta <= alpha) {
@@ -121,23 +134,10 @@ float alphaBetaMinimaxIDS(AlphaBetaSupportingStructure *environment, AlphaBetaTr
 }
 
 /* depth 3 or 4 ? */
-void alphaBetaIDS(GomokuState *self, void *supporting, int depth) {
-    AlphaBetaSupportingStructure *environment = (AlphaBetaSupportingStructure *)supporting;
+int alphaBetaIDS(GomokuState *self, AlphaBetaSupportingStructure *environment, int depth, unsigned long timeBound) {
     int i, bestIndex, thisStep, terminal, forcedChoice = 0, count = 0, indices[225];
     float temp, best, alpha, beta, buffer[225];
     AlphaBetaTreeNode *root;
-
-    if (environment->stepCount == 0) {
-        changeState(self, 8, 8, self->nextMoveParty);
-        self->recentMoveLine = 8;
-        self->recentMoveColumn = 8;
-        self->nextMoveParty *= -1;
-        return;
-    }
-
-    resetTranspositionTable(environment->cache);
-    environment->pruned = 0;
-    environment->issued = 0;
 
     root = createAlphaBetaTreeWithState(self);
     alpha = 0;
@@ -158,9 +158,8 @@ void alphaBetaIDS(GomokuState *self, void *supporting, int depth) {
             assert(&(root->children[i]) != NULL);
             terminal = gameTerminated(&(root->children[i]->situation));
             if (terminal > 2000) {
-                bestIndex = i;
-                forcedChoice = 1;
-                break;
+                environment->winingMove = 1;
+                return i;
             } else if (terminal < -2000) {
                 continue;
             }
@@ -171,7 +170,7 @@ void alphaBetaIDS(GomokuState *self, void *supporting, int depth) {
         if (!forcedChoice) {
             quicksortShit(indices, 0, count - 1, maximizingCompare, buffer);
             for (i = 0; i < count; i++) {
-                temp = alphaBetaMinimaxIDS(environment, root->children[indices[i]], depth, 0, alpha, beta, depth);
+                temp = alphaBetaMinimaxIDS(environment, root->children[indices[i]], depth, 0, alpha, beta, depth, timeBound);
                 destroyAlphaBetaEntireSubtree(root->children[indices[i]]);
                 root->children[indices[i]] = NULL;
                 if (temp > best) {
@@ -197,9 +196,8 @@ void alphaBetaIDS(GomokuState *self, void *supporting, int depth) {
             assert(&(root->children[i]) != NULL);
             terminal = gameTerminated(&(root->children[i]->situation));
             if (terminal < -2000) {
-                bestIndex = i;
-                forcedChoice = 1;
-                break;
+                environment->winingMove = 1;
+                return i;
             } else if (terminal > 2000) {
                 continue;
             }
@@ -210,7 +208,7 @@ void alphaBetaIDS(GomokuState *self, void *supporting, int depth) {
         if (!forcedChoice) {
             quicksortShit(indices, 0, count - 1, minimizingCompare, buffer);
             for (i = 0; i < count; i++) {
-                temp = alphaBetaMinimaxIDS(environment, root->children[indices[i]], depth, 1, alpha, beta, depth);
+                temp = alphaBetaMinimaxIDS(environment, root->children[indices[i]], depth, 1, alpha, beta, depth, timeBound);
                 destroyAlphaBetaEntireSubtree(root->children[indices[i]]);
                 root->children[indices[i]] = NULL;
                 if (temp < best) {
@@ -225,18 +223,53 @@ void alphaBetaIDS(GomokuState *self, void *supporting, int depth) {
         }
     }
 
-    if (bestIndex == -1) {
-        fprintf(stdout, "Surrender!\n");
-        abort();
-    }
-
-    changeState(self, bestIndex / 15 + 1, bestIndex % 15 + 1, self->nextMoveParty);
-    self->recentMoveLine = bestIndex / 15 + 1;
-    self->recentMoveColumn = bestIndex % 15 + 1;
-    self->nextMoveParty *= -1;
-
     destroyAlphaBetaEntireSubtree(root);
+
+    return bestIndex;
 }
 
+void iterativeDeepening(GomokuState *self, void *supporting) {
+    unsigned long timeBound;
+    AlphaBetaSupportingStructure *environment = (AlphaBetaSupportingStructure *)supporting;
+    int i, best, last, chosen;
 
+    initializeTimingSystem();
+    timeBound = currentSystemTime() + convertToRepresentation(14500);
+
+    environment->strategyLevel = -1;
+    resetTranspositionTable(environment->cache);
+    environment->winingMove = 0;
+
+    if (environment->stepCount == 0) {
+        changeState(self, 8, 8, self->nextMoveParty);
+        self->recentMoveLine = 8;
+        self->recentMoveColumn = 8;
+        self->nextMoveParty *= -1;
+        return;
+    }
+
+    best = last = chosen = -1;
+    for (i = 3; (!(environment->winingMove)) && (currentSystemTime() < timeBound); i++) {
+        last = best;
+        best = alphaBetaIDS(self, environment, i, timeBound);
+    }
+
+    if (environment->isCut) {
+        chosen = last;
+        environment->strategyLevel = i - 1;
+    } else {
+        chosen = best;
+        environment->strategyLevel = i;
+    }
+
+    if (environment->winingMove) {
+        chosen = best;
+        environment->strategyLevel = -1;
+    }
+
+    changeState(self, chosen / 15 + 1, chosen % 15 + 1, self->nextMoveParty);
+    self->recentMoveLine = chosen / 15 + 1;
+    self->recentMoveColumn = chosen % 15 + 1;
+    self->nextMoveParty *= -1;
+}
 

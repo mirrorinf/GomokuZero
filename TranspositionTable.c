@@ -91,7 +91,7 @@ int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *bo
 void storeInTranspositionTable(TranspositionTable *self, const unsigned char *board, float score, unsigned char depth) {
     unsigned long address = hashFunction(board) % self->capacity;
 
-    if (self->occupied[address] && self->depth[address] <= depth) {
+    if (self->occupied[address] && self->depth[address] >= depth) {
         return;
     }
 
@@ -104,7 +104,7 @@ void storeInTranspositionTable(TranspositionTable *self, const unsigned char *bo
 void storeInTranspositionTableWithRound(TranspositionTable *self, const unsigned char *board, float score, unsigned char depth, int round) {
     unsigned long address = hashFunction(board) % self->capacity;
 
-    if (self->occupied[address] && self->depth[address] <= depth) {
+    if (self->occupied[address] && self->depth[address] >= depth) {
         return;
     }
 

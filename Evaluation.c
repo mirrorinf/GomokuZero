@@ -294,7 +294,13 @@ float shortsightedEvaluationForTheWhitePlayer(GomokuState *self) {
         }
         ev += result;
     }
-    return ev;
+    if (ev > 45) {
+        return 95;
+    }
+    if (ev < -45) {
+        return 5;
+    }
+    return ev + 50;
 }
 
 float winLoseEvaluation(GomokuState *self) {

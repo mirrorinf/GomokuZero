@@ -6,5 +6,6 @@
 void initializeTimingSystem();
 unsigned long currentSystemTime();
 float convertTimeIntevalToMilliSeconds(unsigned long start, unsigned long end);
+unsigned long convertToRepresentation(float milliseconds);
 
 #endif

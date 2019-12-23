@@ -19,6 +19,11 @@ float convertTimeIntevalToMilliSeconds(unsigned long start, unsigned long end) {
     return (float)nano / 1e6;
 }
 
+unsigned long convertToRepresentation(float milliseconds) {
+    unsigned long ns = milliseconds * 1e6;
+    return ns * timeInfo.denom / timeInfo.numer;
+}
+
 #endif
 
 /* If this is a more formal project then here should be implementations for other platforms */

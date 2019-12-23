@@ -138,7 +138,8 @@ float alphaBetaMinimax(AlphaBetaSupportingStructure *environment, AlphaBetaTreeN
     }
 
     if (depth <= 0) {
-        return environment->evaluate(&(node->situation));
+        temp = environment->evaluate(&(node->situation));
+        return temp;
     }
 
     if (isMaxPlayer) {
