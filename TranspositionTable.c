@@ -40,8 +40,15 @@ TranspositionTable *createTranspositionTable(size_t capacity) {
         return NULL;
     }
 
-    self->cacheHit = 0;
-    self->cacheLookup = 0;
+    self->isNew = (unsigned char *)malloc(sizeof(unsigned char) * capacity);
+    if (self->occupied == NULL) {
+        free(self->boardStates);
+        free(self->depth);
+        free(self->score);
+        free(self->occupied);
+        free(self);
+        return NULL;
+    }
 
     return self;
 }
@@ -50,11 +57,12 @@ void destroyTranspositionTable(TranspositionTable *self) {
     free(self->boardStates);
     free(self->depth);
     free(self->score);
+    free(self->isNew);
     free(self);
 }
 
 void resetTranspositionTable(TranspositionTable *self) {
-    memset(self->occupied, 0, sizeof(unsigned char) * self->capacity);
+    memset(self->isNew, 0, sizeof(unsigned char) * self->capacity);
 }
 
 /* 32-bit PJW hash function for fixed length */
@@ -75,15 +83,16 @@ static unsigned long hashFunction(const unsigned char *str) {
 int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *board, float *output) {
     unsigned long address = hashFunction(board) % self->capacity;
 
-    self->cacheLookup++;
-
     if (!self->occupied[address]) {
         return 0;
     }
+
     if (memcmp(board, &(self->boardStates[225 * address]), sizeof(unsigned char) * 225) == 0) {
         *output = self->score[address];
-        self->cacheHit++;
-        return self->occupied[address];
+        if (self->isNew[address]) {
+            return self->occupied[address];
+        }
+        return HISTORICAL_STORAGE;
     }
     return 0;
 }
@@ -91,7 +100,7 @@ int lookupInTranspositionTable(TranspositionTable *self, const unsigned char *bo
 void storeInTranspositionTable(TranspositionTable *self, const unsigned char *board, float score, unsigned char depth) {
     unsigned long address = hashFunction(board) % self->capacity;
 
-    if (self->occupied[address] && self->depth[address] >= depth) {
+    if (self->occupied[address] && self->isNew[address] && self->depth[address] >= depth) {
         return;
     }
 
@@ -99,12 +108,13 @@ void storeInTranspositionTable(TranspositionTable *self, const unsigned char *bo
     self->depth[address] = depth;
     self->occupied[address] = 1;
     self->score[address] = score;
+    self->isNew[address] = 1;
 }
 
 void storeInTranspositionTableWithRound(TranspositionTable *self, const unsigned char *board, float score, unsigned char depth, int round) {
     unsigned long address = hashFunction(board) % self->capacity;
 
-    if (self->occupied[address] && self->depth[address] >= depth) {
+    if (self->occupied[address] && self->isNew[address] && self->depth[address] >= depth) {
         return;
     }
 
@@ -112,4 +122,5 @@ void storeInTranspositionTableWithRound(TranspositionTable *self, const unsigned
     self->depth[address] = depth;
     self->occupied[address] = round;
     self->score[address] = score;
+    self->isNew[address] = 1;
 }

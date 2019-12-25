@@ -2,6 +2,8 @@
 #include <assert.h>
 #include "timing.h"
 
+#define SEARCH_ONLY_ADJECENT
+
 typedef int (*compareFunction)(int, int, void *);
 
 typedef struct {
@@ -76,9 +78,11 @@ float alphaBetaMinimaxIDS(AlphaBetaSupportingStructure *environment, AlphaBetaTr
             if (stateAtPosition(&(node->situation), i / 15 + 1, i % 15 + 1) != kGomokuGridStateUnoccupied) {
                 continue;
             }
+#ifdef SEARCH_ONLY_ADJECENT
             if (!isAdjecentToSituation(&(node->situation), i / 15 + 1, i % 15 + 1)) {
                 continue;
             }
+#endif
             expandAlphaBetaTreeNode(node, i);
             if (lookupInTranspositionTable(environment->cache, node->children[i]->situation.board, &temp)) {
                 buffer[i] = temp;
@@ -104,9 +108,11 @@ float alphaBetaMinimaxIDS(AlphaBetaSupportingStructure *environment, AlphaBetaTr
             if (stateAtPosition(&(node->situation), i / 15 + 1, i % 15 + 1) != kGomokuGridStateUnoccupied) {
                 continue;
             }
+#ifdef SEARCH_ONLY_ADJECENT
             if (!isAdjecentToSituation(&(node->situation), i / 15 + 1, i % 15 + 1)) {
                 continue;
             }
+#endif
             expandAlphaBetaTreeNode(node, i);
             if (lookupInTranspositionTable(environment->cache, node->children[i]->situation.board, &temp)) {
                 buffer[i] = temp;
@@ -151,9 +157,11 @@ int alphaBetaIDS(GomokuState *self, AlphaBetaSupportingStructure *environment, i
             if (stateAtPosition(self, i / 15 + 1, i % 15 + 1) != kGomokuGridStateUnoccupied) {
                 continue;
             }
+#ifdef SEARCH_ONLY_ADJECENT
             if (!isAdjecentToSituation(self, i / 15 + 1, i % 15 + 1)) {
                 continue;
             }
+#endif
             expandAlphaBetaTreeNode(root, i);
             assert(&(root->children[i]) != NULL);
             terminal = gameTerminated(&(root->children[i]->situation));
@@ -193,9 +201,11 @@ int alphaBetaIDS(GomokuState *self, AlphaBetaSupportingStructure *environment, i
             if (stateAtPosition(self, i / 15 + 1, i % 15 + 1) != kGomokuGridStateUnoccupied) {
                 continue;
             }
+#ifdef SEARCH_ONLY_ADJECENT
             if (!isAdjecentToSituation(self, i / 15 + 1, i % 15 + 1)) {
                 continue;
             }
+#endif
             expandAlphaBetaTreeNode(root, i);
             assert(&(root->children[i]) != NULL);
             terminal = gameTerminated(&(root->children[i]->situation));
@@ -257,17 +267,17 @@ void iterativeDeepening(GomokuState *self, void *supporting) {
     }
 
     best = last = chosen = -1;
-    for (i = 3; (!(environment->winingMove)) && (currentSystemTime() < timeBound); i++) {
+    for (i = 2; (!(environment->winingMove)) && (currentSystemTime() < timeBound); i++) {
         last = best;
         best = alphaBetaIDS(self, environment, i, timeBound);
     }
 
     if (environment->isCut) {
         chosen = last;
-        environment->strategyLevel = i - 1;
+        environment->strategyLevel = i + 1;
     } else {
         chosen = best;
-        environment->strategyLevel = i;
+        environment->strategyLevel = i + 2;
     }
 
     if (environment->winingMove) {

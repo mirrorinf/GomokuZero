@@ -8,9 +8,10 @@ typedef struct {
     float *score;
     unsigned char *depth;
     size_t capacity;
-    unsigned char *occupied;
-    unsigned long cacheHit, cacheLookup;
+    unsigned char *occupied, *isNew;
 } TranspositionTable;
+
+#define HISTORICAL_STORAGE 23333
 
 TranspositionTable *createTranspositionTable(size_t capacity);
 void destroyTranspositionTable(TranspositionTable *self);

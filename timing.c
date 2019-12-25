@@ -24,8 +24,9 @@ unsigned long convertToRepresentation(float milliseconds) {
     return ns * timeInfo.denom / timeInfo.numer;
 }
 #else
-#ifdef LINUX
-#endif
+
+#error "No support"
+
 #endif
 
 /* If this is a more formal project then here should be implementations for other platforms */
