@@ -252,7 +252,7 @@ void iterativeDeepening(GomokuState *self, void *supporting) {
     int i, best, last, chosen;
 
     initializeTimingSystem();
-    timeBound = currentSystemTime() + convertToRepresentation(14500);
+    timeBound = currentSystemTime() + convertToRepresentation(14300);
 
     environment->strategyLevel = -1;
     resetTranspositionTable(environment->cache);
